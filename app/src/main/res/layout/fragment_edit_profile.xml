@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+<LinearLayout
+    android:id="@+id/edit_profile_fragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#FFFF"
+android:orientation="vertical"
+tools:context="com.pbpkelompok3.shopping.ui.profile.EditProfileFragment">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_gravity="center"
+    style="@style/TextAppearance.MaterialComponents.Headline5"
+    android:text="@string/edit_profile" />
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/first_name_layout"
+    android:layout_marginTop="40dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_firstEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/input_your_first_name"
+        android:inputType="text" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/last_name_layout"
+    android:layout_marginTop="25dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_lastEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/input_your_last_name"
+        android:inputType="text" />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/email_layout"
+    android:layout_marginTop="25dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_emailEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:autofillHints=""
+        android:hint="@string/input_your_email"
+        android:inputType="textEmailAddress"
+        android:enabled="false"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/input_phone_layout"
+    android:layout_marginTop="25dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_phoneEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:autofillHints=""
+        android:hint="@string/input_your_phone_number"
+        android:inputType="number"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_marginTop="50dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancelEdit"
+        android:text="@string/cancel"
+        android:layout_weight="0.8"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#ED2B2A"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_updateEdit"
+        android:text="@string/update_profile"
+        android:layout_weight="0.8"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#006400"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+</LinearLayout>
+</ScrollView>

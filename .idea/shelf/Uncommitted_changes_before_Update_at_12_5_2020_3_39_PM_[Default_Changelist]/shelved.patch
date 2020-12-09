@@ -1,0 +1,571 @@
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.api;\r\n\r\nimport com.pbpkelompok3.shopping.model.ResponsModelMan;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.http.Field;\r\nimport retrofit2.http.FormUrlEncoded;\r\nimport retrofit2.http.GET;\r\nimport retrofit2.http.POST;\r\nimport retrofit2.http.Query;\r\n\r\npublic interface ApiRequestProdukMan {\r\n    @FormUrlEncoded\r\n    @POST(\"man\")\r\n    Call<ResponsModelMan> sendProduk(@Field(\"nama_produkM\") String nama_produk,\r\n                                     @Field(\"harga_produkM\") Double harga_produk,\r\n                                     @Field(\"deskripsi_produkM\") String detail_produk,\r\n                                     @Field(\"gambar_produkM\") String foto_produk,\r\n                                     @Field(\"stok\") int size);\r\n\r\n    @GET(\"man\")\r\n    Call<ResponsModelMan> getProdukMan(@Query(\"man\") String data);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java	(date 1607154610527)
+@@ -19,6 +19,6 @@
+                                      @Field("stok") int size);
+ 
+     @GET("man")
+-    Call<ResponsModelMan> getProdukMan(@Query("man") String data);
++    Call<ResponsModelMan> getProdukMan(@Query("data") String data);
+ 
+ }
+Index: app/src/main/java/com/pbpkelompok3/shopping/ui/man/ManFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.ui.man;\r\n\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.widget.SearchView;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.DefaultItemAnimator;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.pbpkelompok3.shopping.R;\r\nimport com.pbpkelompok3.shopping.adapter.ManRecyclerViewAdapter;\r\nimport com.pbpkelompok3.shopping.model.ProductMan;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class ManFragment extends Fragment {\r\n    private ArrayList<ProductMan> listProduct;\r\n    private ManRecyclerViewAdapter adapter;\r\n    private RecyclerView recyclerView;\r\n    private RecyclerView.LayoutManager mLayoutManager;\r\n    private SearchView editSearch;\r\n\r\n    public View onCreateView(@NonNull LayoutInflater inflater,\r\n                             ViewGroup container, Bundle savedInstanceState) {\r\n        View root = inflater.inflate(R.layout.fragment_man, container, false);\r\n\r\n        editSearch = (SearchView) root.findViewById(R.id.searchView);\r\n\r\n\r\n        //recycler view\r\n        adapter = new ManRecyclerViewAdapter(this.getContext(), listProduct);\r\n        recyclerView = root.findViewById(R.id.recycler_view_man);\r\n        mLayoutManager = new LinearLayoutManager(this.getActivity());\r\n\r\n        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n            @Override\r\n            public boolean onQueryTextSubmit(String query) {\r\n                adapter.getFilter().filter(query);\r\n                recyclerView.setLayoutManager(mLayoutManager);\r\n                recyclerView.setItemAnimator(new DefaultItemAnimator());\r\n                recyclerView.setAdapter(adapter);\r\n                return false;\r\n            }\r\n\r\n            @Override\r\n            public boolean onQueryTextChange(String newText) {\r\n                adapter.getFilter().filter(newText);\r\n                recyclerView.setLayoutManager(mLayoutManager);\r\n                recyclerView.setItemAnimator(new DefaultItemAnimator());\r\n                recyclerView.setAdapter(adapter);\r\n                return false;\r\n            }\r\n\r\n        });\r\n        recyclerView.setLayoutManager(mLayoutManager);\r\n        recyclerView.setItemAnimator(new DefaultItemAnimator());\r\n        recyclerView.setAdapter(adapter);\r\n\r\n        return root;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/ui/man/ManFragment.java	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/java/com/pbpkelompok3/shopping/ui/man/ManFragment.java	(date 1607157258676)
+@@ -4,6 +4,7 @@
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.Toast;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.widget.SearchView;
+@@ -14,12 +15,20 @@
+ 
+ import com.pbpkelompok3.shopping.R;
+ import com.pbpkelompok3.shopping.adapter.ManRecyclerViewAdapter;
+-import com.pbpkelompok3.shopping.model.ProductMan;
++import com.pbpkelompok3.shopping.api.ApiRequestProdukMan;
++import com.pbpkelompok3.shopping.api.Retroserver;
++import com.pbpkelompok3.shopping.model.ManDao;
++import com.pbpkelompok3.shopping.model.ResponsModelMan;
+ 
+ import java.util.ArrayList;
++import java.util.List;
++
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
+ 
+ public class ManFragment extends Fragment {
+-    private ArrayList<ProductMan> listProduct;
++    private List<ManDao> listProduct = new ArrayList<>();
+     private ManRecyclerViewAdapter adapter;
+     private RecyclerView recyclerView;
+     private RecyclerView.LayoutManager mLayoutManager;
+@@ -30,37 +39,49 @@
+         View root = inflater.inflate(R.layout.fragment_man, container, false);
+ 
+         editSearch = (SearchView) root.findViewById(R.id.searchView);
++        recyclerView = root.findViewById(R.id.recycler_view_man);
++        getProduk();
++        return root;
++    }
+ 
++    public void getProduk(){
++        ApiRequestProdukMan apiService = Retroserver.getClient().create(ApiRequestProdukMan.class);
++        Call<ResponsModelMan> call = apiService.getProdukMan("data");
+ 
+-        //recycler view
++        call.enqueue(new Callback<ResponsModelMan>() {
++            @Override
++            public void onResponse(Call<ResponsModelMan> call, Response<ResponsModelMan> response) {
++                showDataToAdapter(response.body().getData());
++            }
++            @Override
++            public void onFailure(Call<ResponsModelMan> call, Throwable t) {
++                Toast.makeText(getContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
++            }
++        });
++    }
++
++    public void showDataToAdapter(List<ManDao> list){
+         adapter = new ManRecyclerViewAdapter(this.getContext(), listProduct);
+-        recyclerView = root.findViewById(R.id.recycler_view_man);
+         mLayoutManager = new LinearLayoutManager(this.getActivity());
++        recyclerView.setItemAnimator(new DefaultItemAnimator());
++        recyclerView.setLayoutManager(mLayoutManager);
++        recyclerView.setAdapter(adapter);
+ 
+         editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+             @Override
+             public boolean onQueryTextSubmit(String query) {
+                 adapter.getFilter().filter(query);
+-                recyclerView.setLayoutManager(mLayoutManager);
+-                recyclerView.setItemAnimator(new DefaultItemAnimator());
+-                recyclerView.setAdapter(adapter);
+                 return false;
+             }
+ 
+             @Override
+             public boolean onQueryTextChange(String newText) {
+                 adapter.getFilter().filter(newText);
+-                recyclerView.setLayoutManager(mLayoutManager);
+-                recyclerView.setItemAnimator(new DefaultItemAnimator());
+-                recyclerView.setAdapter(adapter);
+                 return false;
+             }
+ 
+         });
+-        recyclerView.setLayoutManager(mLayoutManager);
+-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+-        recyclerView.setAdapter(adapter);
+ 
+-        return root;
++
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/item_product_man.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:bind=\"http://schemas.android.com/apk/res-auto\">\r\n\r\n<!--    <data>-->\r\n<!--        <variable-->\r\n<!--            name=\"Product\"-->\r\n<!--            type=\"com.pbpkelompok3.shopping.model.ProductMan\"/>-->\r\n<!--    </data>-->\r\n\r\n    <androidx.cardview.widget.CardView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"3dp\"\r\n        android:id=\"@+id/ParentAdapter\"\r\n        android:background=\"#BBB1B2\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\"\r\n            android:layout_margin=\"10dp\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/imageProductM\"\r\n                    android:layout_width=\"110dp\"\r\n                    android:layout_height=\"110dp\">\r\n                </ImageView>\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"vertical\">\r\n                    <TextView\r\n                        android:id=\"@+id/txtNamaProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:textSize=\"12dp\"\r\n                        style=\"@style/TextAppearance.MaterialComponents.Headline6\"/>\r\n                    <TextView\r\n                        android:id=\"@+id/txtDetailProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:textSize=\"12dp\"/>\r\n                    <TextView\r\n                        android:id=\"@+id/txtHargaProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginTop=\"13dp\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:textSize=\"12dp\"\r\n                        style=\"@style/TextAppearance.MaterialComponents.Headline5\"/>\r\n                </LinearLayout>\r\n        </LinearLayout>\r\n\r\n    </androidx.cardview.widget.CardView>\r\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/item_product_man.xml	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/res/layout/item_product_man.xml	(date 1607154033429)
+@@ -4,12 +4,6 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     xmlns:bind="http://schemas.android.com/apk/res-auto">
+ 
+-<!--    <data>-->
+-<!--        <variable-->
+-<!--            name="Product"-->
+-<!--            type="com.pbpkelompok3.shopping.model.ProductMan"/>-->
+-<!--    </data>-->
+-
+     <androidx.cardview.widget.CardView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+@@ -38,13 +32,15 @@
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="7dp"
++                        android:text="Nama Produk"
+                         android:textSize="12dp"
+                         style="@style/TextAppearance.MaterialComponents.Headline6"/>
+                     <TextView
+-                        android:id="@+id/txtDetailProductM"
++                        android:id="@+id/txtDeskripsiProductM"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="7dp"
++                        android:text="deskripsi produk"
+                         android:textSize="12dp"/>
+                     <TextView
+                         android:id="@+id/txtHargaProductM"
+@@ -52,6 +48,7 @@
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="13dp"
+                         android:layout_marginLeft="7dp"
++                        android:text="harga produk"
+                         android:textSize="12dp"
+                         style="@style/TextAppearance.MaterialComponents.Headline5"/>
+                 </LinearLayout>
+Index: app/src/main/java/com/pbpkelompok3/shopping/adapter/ManRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.adapter;\r\n\r\nimport android.content.Context;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Filter;\r\nimport android.widget.Filterable;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.pbpkelompok3.shopping.R;\r\nimport com.pbpkelompok3.shopping.model.ProductMan;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class ManRecyclerViewAdapter extends RecyclerView.Adapter<ManRecyclerViewAdapter.ProductViewHolder> implements Filterable {\r\n\r\n    private View view;\r\n    private Context context;\r\n    private List<ProductMan> productList;\r\n    private List<ProductMan> ProductListFull;\r\n\r\n\r\n\r\n    public ManRecyclerViewAdapter(Context context, List<ProductMan> productList) {\r\n        this.context = context;\r\n        this.productList = productList;\r\n        this.ProductListFull = new ArrayList<>(productList);\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());\r\n        view = layoutInflater.inflate(R.layout.item_product_man, parent, false);\r\n        return new ManRecyclerViewAdapter.ProductViewHolder(view);\r\n//        ItemProductManBinding binding = ItemProductManBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);\r\n//        final ProductViewHolder holder = new ProductViewHolder(binding);\r\n//        return holder;\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {\r\n        final ProductMan productM = productList.get(position);\r\n\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return productList.size();\r\n    }\r\n\r\n    public class ProductViewHolder extends RecyclerView.ViewHolder{\r\n\r\n        public ProductViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n        }\r\n\r\n//        @Override\r\n//        public void onClick(View v) {\r\n//            AppCompatActivity activity = (AppCompatActivity) v.getContext();\r\n//            productMan product = productList.get(getAdapterPosition());\r\n//            Bundle data = new Bundle();\r\n//            data.putSerializable(\"man\", product);\r\n//            UpdateFragment updateFragment = new UpdateFragment();\r\n//            updateFragment.setArguments(data);\r\n//            activity.getSupportFragmentManager()\r\n//                    .beginTransaction()\r\n//                    .replace(R.id.frame_layout, updateFragment)\r\n//                    .commit();\r\n//        }\r\n    }\r\n\r\n    //FILTER SEARCH VIEW\r\n    @Override\r\n    public Filter getFilter() {\r\n\r\n        return productFilter;\r\n    }\r\n\r\n    private Filter productFilter = new Filter() {\r\n        @Override\r\n        protected FilterResults performFiltering(CharSequence charSequence) {\r\n            List<ProductMan> filterProductList = new ArrayList<>();\r\n\r\n            if(charSequence == null || charSequence.length() == 0 || charSequence.toString().equalsIgnoreCase(\"\")){\r\n                filterProductList.addAll(ProductListFull);\r\n            } else {\r\n                String filterPattern = charSequence.toString().toLowerCase().trim();\r\n\r\n                for (ProductMan item : ProductListFull){\r\n                    if(item.getNama_produkM().toLowerCase().contains(filterPattern)) {\r\n                        filterProductList.add(item);\r\n                    }\r\n                }\r\n            }\r\n            FilterResults results = new FilterResults();\r\n            results.values = filterProductList;\r\n            return results;\r\n        }\r\n\r\n        @Override\r\n        protected void publishResults(CharSequence charSequence, FilterResults results) {\r\n            productList.clear();\r\n            productList.addAll((List) results.values);\r\n\r\n            notifyDataSetChanged();\r\n        }\r\n    };\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/adapter/ManRecyclerViewAdapter.java	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/java/com/pbpkelompok3/shopping/adapter/ManRecyclerViewAdapter.java	(date 1607155859694)
+@@ -5,30 +5,33 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.Filter;
+-import android.widget.Filterable;
++import android.widget.ImageView;
++import android.widget.TextView;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
++import com.bumptech.glide.Glide;
+ import com.pbpkelompok3.shopping.R;
+-import com.pbpkelompok3.shopping.model.ProductMan;
++import com.pbpkelompok3.shopping.api.UserApi;
++import com.pbpkelompok3.shopping.model.ManDao;
+ 
++import java.text.DecimalFormat;
++import java.text.NumberFormat;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-public class ManRecyclerViewAdapter extends RecyclerView.Adapter<ManRecyclerViewAdapter.ProductViewHolder> implements Filterable {
++public class ManRecyclerViewAdapter extends RecyclerView.Adapter<ManRecyclerViewAdapter.ProductViewHolder>{
+ 
+     private View view;
+     private Context context;
+-    private List<ProductMan> productList;
+-    private List<ProductMan> ProductListFull;
+-
++    private List<ManDao> productList;
++    private List<ManDao> ProductListFiltered;
+ 
+-
+-    public ManRecyclerViewAdapter(Context context, List<ProductMan> productList) {
++    public ManRecyclerViewAdapter(Context context, List<ManDao> productList) {
+         this.context = context;
+         this.productList = productList;
+-        this.ProductListFull = new ArrayList<>(productList);
++        this.ProductListFiltered = productList;
+         notifyDataSetChanged();
+     }
+ 
+@@ -38,26 +41,38 @@
+         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+         view = layoutInflater.inflate(R.layout.item_product_man, parent, false);
+         return new ManRecyclerViewAdapter.ProductViewHolder(view);
+-//        ItemProductManBinding binding = ItemProductManBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+-//        final ProductViewHolder holder = new ProductViewHolder(binding);
+-//        return holder;
+     }
+ 
+     @Override
+     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+-        final ProductMan productM = productList.get(position);
++        final ManDao productM = productList.get(position);
++
++        NumberFormat formatter = new DecimalFormat("#,###");
++        holder.txtNama.setText(productM.getNamaProduk());
++        holder.txtdeskripsi.setText(productM.getDeskripsiProduk());
++        holder.txtHarga.setText("Rp "+ formatter.format(productM.getHargaProduk()));
++        Glide.with(context)
++                .load(UserApi.URL_IMAGE+productM.getGambarProduk())
++                .into(holder.ivGambar);
+ 
+     }
+ 
+     @Override
+     public int getItemCount() {
+-        return productList.size();
++        return (ProductListFiltered != null) ? ProductListFiltered.size() : 0;
+     }
+ 
+     public class ProductViewHolder extends RecyclerView.ViewHolder{
+ 
++        private TextView txtNama, txtHarga, txtdeskripsi, txtstok;
++        private ImageView ivGambar;
++
+         public ProductViewHolder(@NonNull View itemView) {
+             super(itemView);
++            txtNama = itemView.findViewById(R.id.txtNamaProductM);
++            txtdeskripsi = itemView.findViewById(R.id.txtDeskripsiProductM);
++            txtHarga = itemView.findViewById(R.id.txtHargaProductM);
++            ivGambar = itemView.findViewById(R.id.imageProductM);
+         }
+ 
+ //        @Override
+@@ -75,40 +90,34 @@
+ //        }
+     }
+ 
+-    //FILTER SEARCH VIEW
+-    @Override
+     public Filter getFilter() {
+-
+-        return productFilter;
+-    }
+-
+-    private Filter productFilter = new Filter() {
+-        @Override
+-        protected FilterResults performFiltering(CharSequence charSequence) {
+-            List<ProductMan> filterProductList = new ArrayList<>();
+-
+-            if(charSequence == null || charSequence.length() == 0 || charSequence.toString().equalsIgnoreCase("")){
+-                filterProductList.addAll(ProductListFull);
+-            } else {
+-                String filterPattern = charSequence.toString().toLowerCase().trim();
+-
+-                for (ProductMan item : ProductListFull){
+-                    if(item.getNama_produkM().toLowerCase().contains(filterPattern)) {
+-                        filterProductList.add(item);
+-                    }
+-                }
+-            }
+-            FilterResults results = new FilterResults();
+-            results.values = filterProductList;
+-            return results;
+-        }
+-
+-        @Override
+-        protected void publishResults(CharSequence charSequence, FilterResults results) {
+-            productList.clear();
+-            productList.addAll((List) results.values);
+-
+-            notifyDataSetChanged();
+-        }
+-    };
++        return new Filter() {
++            @Override
++            protected FilterResults performFiltering(CharSequence charSequence) {
++                String userInput = charSequence.toString();
++                if (userInput.isEmpty()) {
++                    ProductListFiltered = productList;
++                }
++                else {
++                    List<ManDao> filteredList = new ArrayList<>();
++                    for(ManDao produk : productList) {
++                        if(String.valueOf(produk.getNamaProduk()).toLowerCase().contains(userInput) ||
++                                produk.getStringHarga().toLowerCase().contains(userInput) ||
++                                produk.getDeskripsiProduk().toLowerCase().contains(userInput)) {
++                            filteredList.add(produk);
++                        }
++                    }
++                    ProductListFiltered = filteredList;
++                }
++                FilterResults filterResults = new FilterResults();
++                filterResults.values = ProductListFiltered;
++                return filterResults;
++            }
++            @Override
++            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
++                ProductListFiltered = (ArrayList<ManDao>) filterResults.values;
++                notifyDataSetChanged();
++            }
++        };
++    }
+ }
+Index: app/src/main/res/layout/item_product_woman.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:bind=\"http://schemas.android.com/apk/res-auto\">\r\n    \r\n\r\n    <androidx.cardview.widget.CardView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"3dp\"\r\n        android:id=\"@+id/ParentAdapter\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\"\r\n            android:layout_margin=\"10dp\">\r\n\r\n            <ImageView\r\n                android:id=\"@+id/imageProductM\"\r\n                android:layout_width=\"110dp\"\r\n                android:layout_height=\"110dp\">\r\n            </ImageView>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"vertical\">\r\n                <TextView\r\n                    android:id=\"@+id/txtNamaProductM\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"7dp\"\r\n                    android:textSize=\"12dp\"\r\n                    style=\"@style/TextAppearance.MaterialComponents.Headline6\"/>\r\n                <TextView\r\n                    android:id=\"@+id/txtDetailProductM\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginLeft=\"7dp\"\r\n                    android:textSize=\"12dp\"/>\r\n                <TextView\r\n                    android:id=\"@+id/txtHargaProductM\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginTop=\"13dp\"\r\n                    android:layout_marginLeft=\"7dp\"\r\n                    android:textSize=\"12dp\"\r\n                    style=\"@style/TextAppearance.MaterialComponents.Headline5\"/>\r\n            </LinearLayout>\r\n\r\n\r\n        </LinearLayout>\r\n\r\n\r\n    </androidx.cardview.widget.CardView>\r\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/item_product_woman.xml	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/res/layout/item_product_woman.xml	(date 1607154408993)
+@@ -18,7 +18,7 @@
+             android:layout_margin="10dp">
+ 
+             <ImageView
+-                android:id="@+id/imageProductM"
++                android:id="@+id/imageProductW"
+                 android:layout_width="110dp"
+                 android:layout_height="110dp">
+             </ImageView>
+@@ -28,24 +28,27 @@
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical">
+                 <TextView
+-                    android:id="@+id/txtNamaProductM"
++                    android:id="@+id/txtNamaProductW"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="7dp"
++                    android:text="nama produk"
+                     android:textSize="12dp"
+                     style="@style/TextAppearance.MaterialComponents.Headline6"/>
+                 <TextView
+-                    android:id="@+id/txtDetailProductM"
++                    android:id="@+id/txtDetailProductW"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="7dp"
++                    android:text="deskripsi produk"
+                     android:textSize="12dp"/>
+                 <TextView
+-                    android:id="@+id/txtHargaProductM"
++                    android:id="@+id/txtHargaProductW"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="13dp"
+                     android:layout_marginLeft="7dp"
++                    android:text="harga produk"
+                     android:textSize="12dp"
+                     style="@style/TextAppearance.MaterialComponents.Headline5"/>
+             </LinearLayout>
+Index: app/src/main/java/com/pbpkelompok3/shopping/adapter/WomanRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.adapter;\r\n\r\nimport android.content.Context;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Filter;\r\nimport android.widget.Filterable;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.pbpkelompok3.shopping.R;\r\nimport com.pbpkelompok3.shopping.model.ProductWoman;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class WomanRecyclerViewAdapter extends RecyclerView.Adapter<WomanRecyclerViewAdapter.ProductViewHolder> implements Filterable {\r\n\r\n    private Context context;\r\n    private List<ProductWoman> productList;\r\n    private List<ProductWoman> productListFull;\r\n    private View view;\r\n\r\n\r\n    public WomanRecyclerViewAdapter(Context context, List<ProductWoman> productList) {\r\n        this.context = context;\r\n        this.productList = productList;\r\n        this.productListFull = new ArrayList<>(productList);\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());\r\n        view = layoutInflater.inflate(R.layout.item_product_man, parent, false);\r\n        return new WomanRecyclerViewAdapter.ProductViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {\r\n        final ProductWoman productW = productList.get(position);\r\n\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return productList.size();\r\n    }\r\n\r\n    public class ProductViewHolder extends RecyclerView.ViewHolder{\r\n\r\n        public ProductViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n        }\r\n\r\n//        @Override\r\n//        public void onClick(View v) {\r\n//            AppCompatActivity activity = (AppCompatActivity) v.getContext();\r\n//            productMan product = productList.get(getAdapterPosition());\r\n//            Bundle data = new Bundle();\r\n//            data.putSerializable(\"man\", product);\r\n//            UpdateFragment updateFragment = new UpdateFragment();\r\n//            updateFragment.setArguments(data);\r\n//            activity.getSupportFragmentManager()\r\n//                    .beginTransaction()\r\n//                    .replace(R.id.frame_layout, updateFragment)\r\n//                    .commit();\r\n//        }\r\n    }\r\n\r\n\r\n    //FILTER SEARCH VIEW\r\n    @Override\r\n    public Filter getFilter() {\r\n\r\n        return productFilter;\r\n    }\r\n\r\n    private Filter productFilter = new Filter() {\r\n        @Override\r\n        protected FilterResults performFiltering(CharSequence charSequence) {\r\n            List<ProductWoman> filterProductList = new ArrayList<>();\r\n\r\n            if(charSequence == null || charSequence.length() == 0 || charSequence.toString().equalsIgnoreCase(\"\")){\r\n                filterProductList.addAll(productListFull);\r\n            } else {\r\n                String filterPattern = charSequence.toString().toLowerCase().trim();\r\n\r\n                for (ProductWoman item : productListFull){\r\n                    if(item.getNama_produkW().toLowerCase().contains(filterPattern)) {\r\n                        filterProductList.add(item);\r\n                    }\r\n                }\r\n            }\r\n            FilterResults results = new FilterResults();\r\n            results.values = filterProductList;\r\n            return results;\r\n        }\r\n\r\n        @Override\r\n        protected void publishResults(CharSequence charSequence, FilterResults results) {\r\n            productList.clear();\r\n            productList.addAll((List) results.values);\r\n\r\n            notifyDataSetChanged();\r\n        }\r\n    };\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/adapter/WomanRecyclerViewAdapter.java	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/java/com/pbpkelompok3/shopping/adapter/WomanRecyclerViewAdapter.java	(date 1607154409001)
+@@ -5,55 +5,74 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.Filter;
+-import android.widget.Filterable;
++import android.widget.ImageView;
++import android.widget.TextView;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
++import com.bumptech.glide.Glide;
+ import com.pbpkelompok3.shopping.R;
++import com.pbpkelompok3.shopping.api.UserApi;
+ import com.pbpkelompok3.shopping.model.ProductWoman;
+ 
++import java.text.DecimalFormat;
++import java.text.NumberFormat;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-public class WomanRecyclerViewAdapter extends RecyclerView.Adapter<WomanRecyclerViewAdapter.ProductViewHolder> implements Filterable {
++public class WomanRecyclerViewAdapter extends RecyclerView.Adapter<WomanRecyclerViewAdapter.ProductViewHolder>{
+ 
++    private View view;
+     private Context context;
+     private List<ProductWoman> productList;
+-    private List<ProductWoman> productListFull;
+-    private View view;
+-
++    private List<ProductWoman> ProductListFiltered;
+ 
+     public WomanRecyclerViewAdapter(Context context, List<ProductWoman> productList) {
+         this.context = context;
+         this.productList = productList;
+-        this.productListFull = new ArrayList<>(productList);
++        this.ProductListFiltered = productList;
+         notifyDataSetChanged();
+     }
+ 
+     @NonNull
+     @Override
+-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
++    public WomanRecyclerViewAdapter.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+         view = layoutInflater.inflate(R.layout.item_product_man, parent, false);
+         return new WomanRecyclerViewAdapter.ProductViewHolder(view);
+     }
+ 
+     @Override
+-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
++    public void onBindViewHolder(@NonNull WomanRecyclerViewAdapter.ProductViewHolder holder, int position) {
+         final ProductWoman productW = productList.get(position);
+ 
++        NumberFormat formatter = new DecimalFormat("#,###");
++        holder.txtNama.setText(productW.getNama_produkW());
++        holder.txtdeskripsi.setText(productW.getDeskripsi_produkW());
++        holder.txtHarga.setText("Rp "+ formatter.format(productW.getStringHarga()));
++        Glide.with(context)
++                .load(UserApi.URL_IMAGE+productW.getGambar_produkW())
++                .into(holder.ivGambar);
++
+     }
+ 
+     @Override
+     public int getItemCount() {
+-        return productList.size();
++        return (ProductListFiltered != null) ? ProductListFiltered.size() : 0;
+     }
+ 
+     public class ProductViewHolder extends RecyclerView.ViewHolder{
+ 
++        private TextView txtNama, txtHarga, txtdeskripsi, txtstok;
++        private ImageView ivGambar;
++
+         public ProductViewHolder(@NonNull View itemView) {
+             super(itemView);
++            txtNama = itemView.findViewById(R.id.txtNamaProductW);
++            txtdeskripsi = itemView.findViewById(R.id.txtDetailProductW);
++            txtHarga = itemView.findViewById(R.id.txtHargaProductW);
++            ivGambar = itemView.findViewById(R.id.imageProductW);
+         }
+ 
+ //        @Override
+@@ -71,41 +90,34 @@
+ //        }
+     }
+ 
+-
+-    //FILTER SEARCH VIEW
+-    @Override
+     public Filter getFilter() {
+-
+-        return productFilter;
+-    }
+-
+-    private Filter productFilter = new Filter() {
+-        @Override
+-        protected FilterResults performFiltering(CharSequence charSequence) {
+-            List<ProductWoman> filterProductList = new ArrayList<>();
+-
+-            if(charSequence == null || charSequence.length() == 0 || charSequence.toString().equalsIgnoreCase("")){
+-                filterProductList.addAll(productListFull);
+-            } else {
+-                String filterPattern = charSequence.toString().toLowerCase().trim();
+-
+-                for (ProductWoman item : productListFull){
+-                    if(item.getNama_produkW().toLowerCase().contains(filterPattern)) {
+-                        filterProductList.add(item);
+-                    }
+-                }
+-            }
+-            FilterResults results = new FilterResults();
+-            results.values = filterProductList;
+-            return results;
+-        }
+-
+-        @Override
+-        protected void publishResults(CharSequence charSequence, FilterResults results) {
+-            productList.clear();
+-            productList.addAll((List) results.values);
+-
+-            notifyDataSetChanged();
+-        }
+-    };
++        return new Filter() {
++            @Override
++            protected FilterResults performFiltering(CharSequence charSequence) {
++                String userInput = charSequence.toString();
++                if (userInput.isEmpty()) {
++                    ProductListFiltered = productList;
++                }
++                else {
++                    List<ProductWoman> filteredList = new ArrayList<>();
++                    for(ProductWoman produk : productList) {
++                        if(String.valueOf(produk.getNama_produkW()).toLowerCase().contains(userInput) ||
++                                produk.getStringHarga().toLowerCase().contains(userInput) ||
++                                produk.getDeskripsi_produkW().toLowerCase().contains(userInput)) {
++                            filteredList.add(produk);
++                        }
++                    }
++                    ProductListFiltered = filteredList;
++                }
++                FilterResults filterResults = new FilterResults();
++                filterResults.values = ProductListFiltered;
++                return filterResults;
++            }
++            @Override
++            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
++                ProductListFiltered = (ArrayList<ProductWoman>) filterResults.values;
++                notifyDataSetChanged();
++            }
++        };
++    }
+ }
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.api;\r\n\r\npublic class UserApi {\r\n    public static final String ROOT_URL\t    = \"http://pbpgalaxystore.xyz/\";\r\n    public static final String ROOT_API\t    =  ROOT_URL+\"api/\";\r\n\r\n    public static final String URL_LOGIN    =  ROOT_API+\"user/\";\r\n//    public static final String URL_REGISTER =  ROOT_API+\"register\";\r\n\r\n    public static final String URL_SELECT   =  ROOT_API+\"user/\";\r\n    public static final String URL_UPDATE   =  ROOT_API+\"user/update/\";\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java	(revision f3ed9754f76eb9e09ba8133f7aeea42c17793549)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java	(date 1607154033469)
+@@ -2,12 +2,11 @@
+ 
+ public class UserApi {
+     public static final String ROOT_URL	    = "http://pbpgalaxystore.xyz/";
++    public static final String URL_IMAGE    = ROOT_URL + "storage/";
+     public static final String ROOT_API	    =  ROOT_URL+"api/";
+ 
+-    public static final String URL_LOGIN    =  ROOT_API+"user/";
+-//    public static final String URL_REGISTER =  ROOT_API+"register";
+-
+-    public static final String URL_SELECT   =  ROOT_API+"user/";
+     public static final String URL_UPDATE   =  ROOT_API+"user/update/";
+ 
++
++
+ }

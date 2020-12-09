@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:cardBackgroundColor="#bbb1b2"
+        android:id="@+id/ParentAdapter">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_woman"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#bbc2bf"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/imageProductW"
+                android:layout_width="110dp"
+                android:layout_height="110dp">
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtNamaProductW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:text="nama produk"
+                    android:textSize="12dp"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"/>
+                <TextView
+                    android:id="@+id/txtDetailProductW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:text="deskripsi produk"
+                    android:textSize="12dp"/>
+                <TextView
+                    android:id="@+id/txtHargaProductW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="7dp"
+                    android:text="harga produk"
+                    android:textSize="12dp"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>

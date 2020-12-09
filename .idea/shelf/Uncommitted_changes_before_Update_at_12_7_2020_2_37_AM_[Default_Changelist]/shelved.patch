@@ -1,0 +1,268 @@
+Index: app/src/main/res/layout/appbaradmin.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.appcompat.widget.Toolbar\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"?attr/actionBarSize\"\r\n    android:background=\"#947c5b\"\r\n    android:id=\"@+id/admintoolbar\"\r\n    android:theme=\"@style/ThemeOverlay.AppCompat.Dark\"\r\n    >\r\n\r\n</androidx.appcompat.widget.Toolbar>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/appbaradmin.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/res/layout/appbaradmin.xml	(date 1607279471026)
+@@ -7,6 +7,7 @@
+     android:background="#947c5b"
+     android:id="@+id/admintoolbar"
+     android:theme="@style/ThemeOverlay.AppCompat.Dark"
++    app:popupTheme="@style/AppTheme.PopupOverlay"
+     >
+ 
+ </androidx.appcompat.widget.Toolbar>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_admin_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".AdminMainActivity\">\r\n\r\n    <include\r\n            layout=\"@layout/appbaradmin\"/>\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_admin_main.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/res/layout/activity_admin_main.xml	(date 1607278985376)
+@@ -6,6 +6,12 @@
+     android:layout_height="match_parent"
+     tools:context=".AdminMainActivity">
+ 
++
++    <include
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        layout="@layout/content_admin"/>
++
+     <include
+             layout="@layout/appbaradmin"/>
+ 
+Index: .idea/modules/app/google-services.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules/app/google-services.json	(date 1607276491714)
++++ .idea/modules/app/google-services.json	(date 1607276491714)
+@@ -0,0 +1,48 @@
++{
++  "project_info": {
++    "project_number": "43752354220",
++    "firebase_url": "https://galaxy-store-8a593.firebaseio.com",
++    "project_id": "galaxy-store-8a593",
++    "storage_bucket": "galaxy-store-8a593.appspot.com"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:43752354220:android:63428246a225bb17610a09",
++        "android_client_info": {
++          "package_name": "com.pbpkelompok3.shopping"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "43752354220-dsbeh1m4d0tl6u0t5urarfh69jpvleei.apps.googleusercontent.com",
++          "client_type": 1,
++          "android_info": {
++            "package_name": "com.pbpkelompok3.shopping",
++            "certificate_hash": "259e9c6235a6055359b07d085dc54dd2db4fd566"
++          }
++        },
++        {
++          "client_id": "43752354220-p38ddhbcopbfhs12u6soba0v1jo6e1s4.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyAQ5ZIGZswVBweZDezV1toeMeyT2trBEa0"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "43752354220-p38ddhbcopbfhs12u6soba0v1jo6e1s4.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'com.google.gms.google-services'\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n    buildToolsVersion \"30.0.2\"\r\n\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n\r\n    defaultConfig {\r\n        applicationId \"com.pbpkelompok3.shopping\"\r\n        minSdkVersion 26\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    buildFeatures {\r\n\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'\r\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\r\n    implementation 'androidx.navigation:navigation-fragment:2.3.0'\r\n    implementation 'androidx.navigation:navigation-ui:2.3.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    //firebase\r\n    implementation 'com.google.firebase:firebase-auth:19.4.0'\r\n    implementation 'com.google.firebase:firebase-firestore:21.7.1'\r\n    implementation 'com.google.firebase:firebase-core:17.0.0'\r\n    implementation 'com.google.firebase:firebase-messaging:20.2.4'\r\n    //ROOM\r\n    def room_version = \"2.2.5\"\r\n\r\n    implementation \"androidx.room:room-runtime:$room_version\"\r\n    annotationProcessor \"androidx.room:room-compiler:$room_version\"\r\n\r\n    //RECYCLER VIEW\r\n    implementation \"androidx.recyclerview:recyclerview:1.1.0\"\r\n\r\n    //Card View\r\n    implementation \"androidx.cardview:cardview:1.0.0\"\r\n\r\n    //circular image view\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n\r\n    //MATERIAL DESIGN\r\n    implementation \"com.google.android.material:material:1.1.0\"\r\n\r\n\r\n    // mapbox\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v9:0.12.0'\r\n\r\n    //GSON\r\n    implementation 'com.google.code.gson:gson:2.8.6'\r\n\r\n    //Glide for Image\r\n    implementation 'com.github.bumptech.glide:glide:4.4.0'\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'\r\n\r\n    // retrofit\r\n    implementation 'com.squareup.retrofit2:retrofit:2.1.0'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'\r\n\r\n    //volley\r\n    implementation 'com.android.volley:volley:1.1.0'\r\n\r\n    //unit test\r\n    testCompile 'org.mockito:mockito-all:1.10.19'\r\n    androidTestImplementation 'androidx.test:rules:1.3.0-beta01'\r\n\r\n    //shapeImage\r\n    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'\r\n    implementation 'com.github.bumptech.glide:glide:4.11.0'\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/build.gradle	(date 1607281623715)
+@@ -38,6 +38,7 @@
+     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+     implementation 'androidx.navigation:navigation-fragment:2.3.0'
+     implementation 'androidx.navigation:navigation-ui:2.3.0'
++    implementation 'androidx.wear:wear:1.1.0'
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+@@ -47,6 +48,7 @@
+     implementation 'com.google.firebase:firebase-firestore:21.7.1'
+     implementation 'com.google.firebase:firebase-core:17.0.0'
+     implementation 'com.google.firebase:firebase-messaging:20.2.4'
++    compileOnly 'com.google.android.wearable:wearable:2.8.1'
+     //ROOM
+     def room_version = "2.2.5"
+ 
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">Galaxy Store</string>\r\n    <string name=\"navigation_drawer_open\">Open navigation drawer</string>\r\n    <string name=\"navigation_drawer_close\">Close navigation drawer</string>\r\n    <string name=\"nav_header_title\">Android Studio</string>\r\n    <string name=\"nav_header_subtitle\">android.studio@android.com</string>\r\n    <string name=\"nav_header_desc\">Navigation header</string>\r\n    <string name=\"action_settings\">Settings</string>\r\n\r\n    <string name=\"menu_home\">Home</string>\r\n    <string name=\"menu_woman\">Woman</string>\r\n    <string name=\"menu_man\">Man</string>\r\n    <string name=\"menu_profile\">Profile</string>\r\n    <string name=\"menu_logout\">Logout</string>\r\n    <string name=\"menu_cart\">Cart</string>\r\n    <string name=\"menu_place\">Place</string>\r\n\r\n    <string name=\"edit_profile_picture\">Change Profile Picture</string>\r\n    <string name=\"my_profile\">Profile</string>\r\n    <string name=\"nama\">Name</string>\r\n    <string name=\"logout\">Logout</string>\r\n    <string name=\"edit_profile\">Change Profile</string>\r\n    <string name=\"phone_number\">Phone Number</string>\r\n    <string name=\"email\">Email</string>\r\n\r\n    <string name=\"input_your_first_name\">Input Your First Name</string>\r\n    <string name=\"input_your_last_name\">Input Your Last Name</string>\r\n    <string name=\"input_your_phone_number\">Input Your Phone Number</string>\r\n    <string name=\"input_your_email\">Input Your Email</string>\r\n    <string name=\"input_your_password\">Input Your Password</string>\r\n\r\n    <string name=\"cancel\">Cancel</string>\r\n    <string name=\"update_profile\">Update</string>\r\n    <string name=\"search\">Search by name</string>\r\n\r\n\r\n    <!-- TODO: Remove or change this placeholder text -->\r\n    <string name=\"haveAccount\">Doesn\\'t have an account ?</string>\r\n    <string name=\"hello_blank_fragment\">Hello blank fragment</string>\r\n    <string name=\"login\">Login</string>\r\n    <string name=\"sign_up\">Sign Up</string>\r\n    <string name=\"start_navigation\">start_navigation</string>\r\n    <string name=\"mapbox_access_token\">pk.eyJ1IjoibWVvbmciLCJhIjoiY2tmcXg2MmF4MDluYjJxb3gxdzM5NXBidCJ9.3_bCd0Au5-WxEu-FQH5PWA</string>\r\n\r\n    <string name=\"open\">Open</string>\r\n    <string name=\"close\">Close</string>\r\n    <string name=\"male\">Male</string>\r\n\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/res/values/strings.xml	(date 1607281623314)
+@@ -45,5 +45,11 @@
+     <string name="open">Open</string>
+     <string name="close">Close</string>
+     <string name="male">Male</string>
++    <string name="title_activity_check_out">CheckOut</string>
++    <!--
++    This string is used for square devices and overridden by hello_world in
++    values-round/strings.xml for round devices.
++    -->
++    <string name="hello_world">Hello Square World!</string>
+ 
+ </resources>
+Index: app/src/main/res/values/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <!-- Default screen margins, per the Android Design guidelines. -->\r\n    <dimen name=\"activity_horizontal_margin\">16dp</dimen>\r\n    <dimen name=\"activity_vertical_margin\">16dp</dimen>\r\n    <dimen name=\"nav_header_vertical_spacing\">8dp</dimen>\r\n    <dimen name=\"nav_header_height\">200dp</dimen>\r\n    <dimen name=\"fab_margin\">16dp</dimen>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/dimens.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/res/values/dimens.xml	(date 1607281623336)
+@@ -5,4 +5,16 @@
+     <dimen name="nav_header_vertical_spacing">8dp</dimen>
+     <dimen name="nav_header_height">200dp</dimen>
+     <dimen name="fab_margin">16dp</dimen>
++    <!--
++    Because the window insets on round devices are larger than 15dp, this padding only applies
++    to square screens.
++    -->
++    <dimen name="box_inset_layout_padding">0dp</dimen>
++
++    <!--
++    This padding applies to both square and round screens. The total padding between the buttons
++    and the window insets is box_inset_layout_padding (above variable) on square screens and
++    inner_frame_layout_padding (below variable) on round screens.
++    -->
++    <dimen name="inner_frame_layout_padding">5dp</dimen>
+ </resources>
+\ No newline at end of file
+Index: app/src/main/res/menu/menu_admin.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\">\r\n\r\n    <group\r\n        android:checkableBehavior=\"single\">\r\n\r\n        <item\r\n            android:title=\"@string/male\"\r\n            android:id=\"@+id/maleAdmin\"\r\n            android:icon=\"@drawable/ic_male\"\r\n            app:showAsAction=\"never\"></item>\r\n\r\n        <item\r\n            android:id=\"@+id/femaleAdmin\"\r\n            android:icon=\"@drawable/ic_female\"\r\n            android:title=\"Female\"\r\n            app:showAsAction=\"never\"></item>\r\n\r\n        <item\r\n            android:id=\"@+id/keluarAdmin\"\r\n            android:icon=\"@drawable/ic_logout\"\r\n            android:title=\"Keluar\"\r\n            app:showAsAction=\"never\"></item>\r\n    </group>\r\n</menu>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_admin.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/res/menu/menu_admin.xml	(date 1607278628801)
+@@ -2,25 +2,20 @@
+ <menu xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+ 
+-    <group
+-        android:checkableBehavior="single">
+ 
+-        <item
+-            android:title="@string/male"
+-            android:id="@+id/maleAdmin"
+-            android:icon="@drawable/ic_male"
+-            app:showAsAction="never"></item>
++    <item
++        android:title="@string/male"
++        android:id="@+id/maleAdmin"
++
++        app:showAsAction="never" />
+ 
+         <item
+             android:id="@+id/femaleAdmin"
+-            android:icon="@drawable/ic_female"
+             android:title="Female"
+-            app:showAsAction="never"></item>
++            app:showAsAction="never"/>
+ 
+         <item
+             android:id="@+id/keluarAdmin"
+-            android:icon="@drawable/ic_logout"
+             android:title="Keluar"
+-            app:showAsAction="never"></item>
+-    </group>
++            app:showAsAction="never"/>
+ </menu>
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.pbpkelompok3.shopping\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />\r\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\r\n    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />\r\n    <uses-permission android:name=\"android.permission.CAMERA\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\"\r\n        android:usesCleartextTraffic=\"true\">\r\n        <activity android:name=\".adapter.AdapterTransaksi\"></activity>\r\n        <activity android:name=\".tambahProdukWomanActivity\" />\r\n        <activity android:name=\".CRUDWomanActivity\" />\r\n        <activity android:name=\".tambahProdukManActivity\" />\r\n        <activity android:name=\".CRUDManActivity\" />\r\n        <activity android:name=\".AdminMainActivity\" />\r\n        <activity android:name=\".MapActivity\" />\r\n        <activity android:name=\".LoginActivity\" />\r\n        <activity android:name=\".SignUpActivity\" />\r\n        <activity android:name=\".AdministratorActivity\" />\r\n        <activity android:name=\".MainActivity\" />\r\n        <activity\r\n            android:name=\".SplashScreen\"\r\n            android:label=\"@string/app_name\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n\r\n        <service android:name=\".MessagingService\">\r\n            <intent-filter>\r\n                <action android:name=\"com.google.firebase.MESSAGING_EVENT\" />\r\n            </intent-filter>\r\n        </service>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 1c6f1cf5b9e07886b5dda143ab0e5b41b7623320)
++++ app/src/main/AndroidManifest.xml	(date 1607281693784)
+@@ -2,6 +2,10 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.pbpkelompok3.shopping">
+ 
++    <uses-permission android:name="android.permission.WAKE_LOCK" />
++
++    <uses-feature android:name="android.hardware.type.watch" />
++
+     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+@@ -16,7 +20,29 @@
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme"
+         android:usesCleartextTraffic="true">
+-        <activity android:name=".adapter.AdapterTransaksi"></activity>
++        <activity android:name=".CheckOutActivity"></activity>
++
++        <uses-library
++            android:name="com.google.android.wearable"
++            android:required="true" />
++        <!--
++               Set to true if your app is Standalone, that is, it does not require the handheld
++               app to run.
++        -->
++        <meta-data
++            android:name="com.google.android.wearable.standalone"
++            android:value="true" />
++
++        <activity
++            android:name=".CheckOut"
++            android:label="@string/title_activity_check_out">
++            <intent-filter>
++                <action android:name="android.intent.action.MAIN" />
++
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
++        </activity>
++        <activity android:name=".adapter.AdapterTransaksi" />
+         <activity android:name=".tambahProdukWomanActivity" />
+         <activity android:name=".CRUDWomanActivity" />
+         <activity android:name=".tambahProdukManActivity" />
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_10_59_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_10_59_PM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_5_2020_3_39_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_5_2020_3_39_PM__Default_Changelist_.xml

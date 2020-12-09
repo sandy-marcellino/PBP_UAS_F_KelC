@@ -1,0 +1,68 @@
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml	(revision 66383e962c4890653032ef561a800e5455b74514)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml	(revision 66383e962c4890653032ef561a800e5455b74514)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]" date="1606822364011" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 12/1/2020 6:32 PM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch	(revision 66383e962c4890653032ef561a800e5455b74514)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch	(revision 66383e962c4890653032ef561a800e5455b74514)
+@@ -1,49 +0,0 @@
+-Index: .idea/compiler.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/compiler.xml	(date 1606816678288)
+-+++ .idea/compiler.xml	(date 1606816678288)
+-@@ -0,0 +1,6 @@
+-+<?xml version="1.0" encoding="UTF-8"?>
+-+<project version="4">
+-+  <component name="CompilerConfiguration">
+-+    <bytecodeTargetLevel target="1.8" />
+-+  </component>
+-+</project>
+-\ No newline at end of file
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/misc.xml	(revision 8df6293c59c4ce460245230a24e6c326c8ec4ac9)
+-+++ .idea/misc.xml	(date 1606816678062)
+-@@ -1,6 +1,6 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+-   <component name="ProjectType">
+-Index: .idea/gradle.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/gradle.xml	(revision 8df6293c59c4ce460245230a24e6c326c8ec4ac9)
+-+++ .idea/gradle.xml	(date 1606816444319)
+-@@ -15,6 +15,7 @@
+-           </set>
+-         </option>
+-         <option name="resolveModulePerSourceSet" value="false" />
+-+        <option name="useQualifiedModuleNames" value="true" />
+-       </GradleProjectSettings>
+-     </option>
+-   </component>
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_5_2020_3_39_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_5_2020_3_39_PM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_10_59_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_10_59_PM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_7_2020_2_37_AM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_7_2020_2_37_AM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_7_2020_12_41_AM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_7_2020_12_41_AM__Default_Changelist_.xml

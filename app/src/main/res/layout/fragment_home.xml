@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainFragment">
+<ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.pbpkelompok3.shopping.ui.home.HomeFragment">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="229dp"
+            android:src="@drawable/home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Shop By Gender"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        <ImageButton
+            android:id="@+id/imageButtonMan"
+            android:layout_width="wrap_content"
+            android:layout_height="142dp"
+            android:layout_marginTop="36dp"
+            android:src="@drawable/manhome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAN"
+            android:textSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonMan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageButtonMan"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonMan" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWoman"
+            android:layout_width="wrap_content"
+            android:layout_height="142dp"
+            android:layout_marginTop="44dp"
+            android:src="@drawable/womanhome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonMan" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WOMAN"
+            android:textSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonWoman"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonWoman"
+            app:layout_constraintStart_toStartOf="@+id/imageButtonWoman"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonWoman" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+</FrameLayout>

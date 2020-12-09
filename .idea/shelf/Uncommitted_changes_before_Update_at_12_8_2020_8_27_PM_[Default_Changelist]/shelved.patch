@@ -1,0 +1,165 @@
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM__Default_Changelist_.xml	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]" date="1606822364011" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 12/1/2020 6:32 PM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_12_1_2020_6_32_PM_[Default_Changelist]/shelved.patch	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
+@@ -1,49 +0,0 @@
+-Index: .idea/compiler.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/compiler.xml	(date 1606816678288)
+-+++ .idea/compiler.xml	(date 1606816678288)
+-@@ -0,0 +1,6 @@
+-+<?xml version="1.0" encoding="UTF-8"?>
+-+<project version="4">
+-+  <component name="CompilerConfiguration">
+-+    <bytecodeTargetLevel target="1.8" />
+-+  </component>
+-+</project>
+-\ No newline at end of file
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/misc.xml	(revision 8df6293c59c4ce460245230a24e6c326c8ec4ac9)
+-+++ .idea/misc.xml	(date 1606816678062)
+-@@ -1,6 +1,6 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+-   <component name="ProjectType">
+-Index: .idea/gradle.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/gradle.xml	(revision 8df6293c59c4ce460245230a24e6c326c8ec4ac9)
+-+++ .idea/gradle.xml	(date 1606816444319)
+-@@ -15,6 +15,7 @@
+-           </set>
+-         </option>
+-         <option name="resolveModulePerSourceSet" value="false" />
+-+        <option name="useQualifiedModuleNames" value="true" />
+-       </GradleProjectSettings>
+-     </option>
+-   </component>
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM_[Default_Changelist]/shelved.patch	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM_[Default_Changelist]/shelved.patch	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
+@@ -1,86 +0,0 @@
+-Index: app/src/main/res/layout/item_product_man.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:bind=\"http://schemas.android.com/apk/res-auto\">\r\n\r\n    <data>\r\n        <variable\r\n            name=\"Product\"\r\n            type=\"com.pbpkelompok3.shopping.model.ProductMan\"/>\r\n    </data>\r\n\r\n    <androidx.cardview.widget.CardView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"3dp\"\r\n        android:id=\"@+id/ParentAdapter\"\r\n        android:background=\"#BBB1B2\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\"\r\n            android:layout_margin=\"10dp\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/imageProductM\"\r\n                    android:layout_width=\"110dp\"\r\n                    android:layout_height=\"110dp\"\r\n                    bind:imageUrl=\"@{Product.imageURL}\">\r\n                </ImageView>\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"vertical\">\r\n                    <TextView\r\n                        android:id=\"@+id/txtNamaProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:text=\"@={Product.nama_product}\"\r\n                        android:textSize=\"12dp\"\r\n                        style=\"@style/TextAppearance.MaterialComponents.Headline6\"/>\r\n                    <TextView\r\n                        android:id=\"@+id/txtDetailProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:text=\"@={Product.detail_product}\"\r\n                        android:textSize=\"12dp\"/>\r\n                    <TextView\r\n                        android:id=\"@+id/txtHargaProductM\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginTop=\"13dp\"\r\n                        android:layout_marginLeft=\"7dp\"\r\n                        android:text=\"@={Product.stringHarga}\"\r\n                        android:textSize=\"12dp\"\r\n                        style=\"@style/TextAppearance.MaterialComponents.Headline5\"/>\r\n                </LinearLayout>\r\n\r\n\r\n\r\n\r\n        </LinearLayout>\r\n\r\n    </androidx.cardview.widget.CardView>\r\n</layout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- app/src/main/res/layout/item_product_man.xml	(revision 1b88cd5828349a6ce985377a960c3d7a3fc185c2)
+-+++ app/src/main/res/layout/item_product_man.xml	(date 1605849688513)
+-@@ -59,10 +59,6 @@
+-                         android:textSize="12dp"
+-                         style="@style/TextAppearance.MaterialComponents.Headline5"/>
+-                 </LinearLayout>
+--
+--
+--
+--
+-         </LinearLayout>
+- 
+-     </androidx.cardview.widget.CardView>
+-Index: app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.pbpkelompok3.shopping;\r\n\r\nimport android.app.NotificationChannel;\r\nimport android.app.NotificationManager;\r\nimport android.app.PendingIntent;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.os.AsyncTask;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.text.TextUtils;\r\nimport android.util.Patterns;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.app.NotificationCompat;\r\n\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.android.material.textfield.TextInputLayout;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.pbpkelompok3.shopping.database.DatabaseUser;\r\nimport com.pbpkelompok3.shopping.model.user;\r\n\r\npublic class SignUpActivity extends AppCompatActivity {\r\n\r\n    private String getEmail,getPassword,getFullname, getPhoneNumber;\r\n    private TextInputEditText fullname, phoneNumber, email, password;\r\n    private TextInputLayout fullnameLayout, phoneNumberLayout, emailLayout, passwordLayout;\r\n    private Button btnSignup,btnSignIn;\r\n    private FirebaseAuth.AuthStateListener mAuthStateListener;\r\n    private FirebaseAuth auth;\r\n    private String CHANNEL_ID = \"Channel Sign Up\";\r\n\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_sign_up);\r\n\r\n        auth =FirebaseAuth.getInstance();\r\n        fullname = findViewById(R.id.input_Fullname);\r\n        phoneNumber = findViewById(R.id.input_phone);\r\n        email = findViewById(R.id.input_email);\r\n        password = findViewById(R.id.input_password);\r\n\r\n        fullnameLayout = findViewById(R.id.fullname);\r\n        phoneNumberLayout = findViewById(R.id.phoneNumber);\r\n        emailLayout = findViewById(R.id.email);\r\n        passwordLayout = findViewById(R.id.password);\r\n\r\n        btnSignIn = findViewById(R.id.btnSignIn);\r\n        btnSignup = findViewById(R.id.btnsign_up);\r\n\r\n        btnSignup.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                if(cekDataUserSignUp()) {\r\n                    auth.createUserWithEmailAndPassword(getEmail,getPassword)\r\n                            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {\r\n                                @Override\r\n                                public void onComplete(@NonNull Task<AuthResult> task) {\r\n                                    if(task.isSuccessful()) {\r\n                                        //send verification link\r\n                                        FirebaseUser user = auth.getCurrentUser();\r\n                                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                                            @Override\r\n                                            public void onSuccess(Void aVoid) {\r\n                                                Toast.makeText(SignUpActivity.this, \"Verification Link has been sent to your email address\", Toast.LENGTH_SHORT).show();\r\n                                            }\r\n                                        }).addOnFailureListener(new OnFailureListener() {\r\n                                            @Override\r\n                                            public void onFailure(@NonNull Exception e) {\r\n                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                                            }\r\n                                        });\r\n\r\n                                        Toast.makeText(SignUpActivity.this, \"Register Successfull\", Toast.LENGTH_SHORT).show();\r\n                                        FirebaseUser fUser = auth.getCurrentUser();\r\n                                        addUser();\r\n                                        createNotificationChannel();\r\n                                        addNotification();\r\n                                        Intent i = new Intent(SignUpActivity.this,LoginActivity.class);\r\n                                        startActivity(i);\r\n                                    }else {\r\n                                        Toast.makeText(SignUpActivity.this, \"Register Failed :  \"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();\r\n                                    }\r\n                                }\r\n                            });\r\n                }\r\n            }\r\n        });\r\n\r\n        btnSignIn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent i = new Intent(SignUpActivity.this,LoginActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n    }\r\n\r\n    private boolean cekDataUserSignUp(){\r\n        //Mendapatkan data yang diinputkan User\r\n        getEmail = email.getText().toString();\r\n        getPassword = password.getText().toString();\r\n        getFullname = fullname.getText().toString();\r\n        getPhoneNumber = phoneNumber.getText().toString();\r\n\r\n        boolean validation = true;\r\n\r\n        //Mengecek apakah email dan sandi kosong atau tidak\r\n        if(TextUtils.isEmpty(getEmail) || !Patterns.EMAIL_ADDRESS.matcher(getEmail).matches()){\r\n            email.setError(\"Email is Invalid\");\r\n            validation = false;\r\n        }\r\n        //Mengecek panjang karakter password baru yang akan didaftarkan\r\n        if(getPassword.length() == 0 ){\r\n            password.setError(\"Password is Required\");\r\n            validation = false;\r\n        }\r\n        if(getFullname.length()==0){\r\n            fullname.setError(\"Fullname is required\");\r\n            validation = false;\r\n        }\r\n\r\n        if (getPassword.length() < 6){\r\n            password.setError(\"Password should be 6 characters\");\r\n            validation = false;\r\n        }\r\n\r\n        if(getPhoneNumber.length()==0){\r\n            phoneNumber.setError(\"Phone Number is Required\");\r\n            validation = false;\r\n        } else if(getPhoneNumber.length()<10 || getPhoneNumber.length()>13){\r\n            phoneNumber.setError(\"Phone Number is invalid\");\r\n            validation = false;\r\n        }\r\n        return validation;\r\n    }\r\n\r\n    private void addUser(){\r\n        final String getName = fullname.getText().toString();\r\n        final String getPhonenumber = phoneNumber.getText().toString();\r\n        final String getemail = email.getText().toString();\r\n        final String getpassword = password.getText().toString();\r\n\r\n        class AddUser extends AsyncTask<Void, Void, Void> {\r\n\r\n            @Override\r\n            protected Void doInBackground(Void... voids) {\r\n                user usr = new user();\r\n                usr.setFullName(getName);\r\n                usr.setPhoneNumber(getPhonenumber);\r\n                usr.setEmail(getemail);\r\n                usr.setPassword(getpassword);\r\n\r\n                DatabaseUser.getInstance(getApplicationContext())\r\n                        .getAppDatabase()\r\n                        .userDao()\r\n                        .insert(usr);\r\n                return null;\r\n            }\r\n\r\n            @Override\r\n            protected void onPostExecute(Void aVoid) {\r\n                super.onPostExecute(aVoid);\r\n                Toast.makeText(SignUpActivity.this, \"User saved\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n\r\n        AddUser add = new AddUser();\r\n        add.execute();\r\n    }\r\n\r\n    private void createNotificationChannel() {\r\n        // NotificationChannel diperlukan untuk API 26+\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {\r\n            CharSequence name = \"Channel Sign In\";\r\n            String description = \"This is Channel Sign Up\";\r\n            int importance = NotificationManager.IMPORTANCE_DEFAULT;\r\n            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name,importance);\r\n            channel.setDescription(description);\r\n            // Register the channel with the system; you can't change the importance\r\n            // or other notification behaviors after this\r\n            NotificationManager notificationManager = getSystemService(NotificationManager.class);\r\n            notificationManager.createNotificationChannel(channel);\r\n        }\r\n    }\r\n\r\n    private void addNotification() {\r\n        //konstruktor NotificationCompat.Builder harus diberi CHANNEL_ID untuk API level 26+\r\n        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)\r\n                .setSmallIcon(R.drawable.ic_launcher_background)\r\n                .setContentTitle(\"Congratulation \")\r\n                .setContentText(\"Register succesfull, verified your account for login !\")\r\n                .setPriority(NotificationCompat.PRIORITY_DEFAULT);\r\n\r\n        // Membuat intent yang menampilkan notifikasi\r\n        Intent notificationIntent = new Intent(this, LoginActivity.class);\r\n        PendingIntent contentIntent = PendingIntent.getActivities(this,0, new Intent[]{notificationIntent}, PendingIntent.FLAG_UPDATE_CURRENT);\r\n        builder.setContentIntent(contentIntent);\r\n\r\n        // Menampilkan notifikasi\r\n        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);\r\n        manager.notify(0,builder.build());\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java	(revision 1b88cd5828349a6ce985377a960c3d7a3fc185c2)
+-+++ app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java	(date 1606708455416)
+-@@ -214,4 +214,6 @@
+-         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+-         manager.notify(0,builder.build());
+-     }
+-+
+-+    
+- }
+-\ No newline at end of file
+-Index: .idea/compiler.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/compiler.xml	(date 1606708217554)
+-+++ .idea/compiler.xml	(date 1606708217554)
+-@@ -0,0 +1,6 @@
+-+<?xml version="1.0" encoding="UTF-8"?>
+-+<project version="4">
+-+  <component name="CompilerConfiguration">
+-+    <bytecodeTargetLevel target="1.8" />
+-+  </component>
+-+</project>
+-\ No newline at end of file
+-Index: .idea/gradle.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/gradle.xml	(revision 1b88cd5828349a6ce985377a960c3d7a3fc185c2)
+-+++ .idea/gradle.xml	(date 1606708096607)
+-@@ -15,6 +15,7 @@
+-           </set>
+-         </option>
+-         <option name="resolveModulePerSourceSet" value="false" />
+-+        <option name="useQualifiedModuleNames" value="true" />
+-       </GradleProjectSettings>
+-     </option>
+-   </component>
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+---- .idea/misc.xml	(revision 1b88cd5828349a6ce985377a960c3d7a3fc185c2)
+-+++ .idea/misc.xml	(date 1606708288103)
+-@@ -1,6 +1,6 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+-   <component name="ProjectType">
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM__Default_Changelist_.xml	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM__Default_Changelist_.xml	(revision 3e19ed50fb61d1a545785b98d2c6cab43cadeec2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM_[Default_Changelist]" date="1606708490823" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_30_2020_10_54_AM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/30/2020 10:54 AM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.pbpkelompok3.shopping.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_woman"
+            app:destination="@id/nav_woman" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_man"
+            app:destination="@id/nav_man" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_man"
+        android:name="com.pbpkelompok3.shopping.ui.man.ManFragment"
+        android:label="@string/menu_man"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_woman"
+        android:name="com.pbpkelompok3.shopping.ui.woman.WomanFragment"
+        android:label="@string/menu_woman"
+        tools:layout="@layout/fragment_man" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.pbpkelompok3.shopping.ui.profile.profileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <activity
+        android:id="@+id/nav_place"
+        android:name="com.pbpkelompok3.shopping.MapActivity"
+        android:label="@string/menu_home"
+        tools:layout="@layout/activity_map" />
+
+    <fragment
+        android:id="@+id/nav_cart"
+        android:name="com.pbpkelompok3.shopping.ViewsCart"
+        android:label="@string/menu_cart"
+        tools:layout="@layout/fragment_views_cart" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_logout"-->
+<!--        android:name="com.pbpkelompok3.shopping.ui.LogoutPenghubung"-->
+<!--        android:label="@string/menu_logout"-->
+<!--        tools:layout="@layout/fragment_logout"/>-->
+</navigation>

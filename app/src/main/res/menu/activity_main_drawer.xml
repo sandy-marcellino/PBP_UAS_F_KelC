@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/menuTop">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_man"
+            android:icon="@drawable/ic_male"
+            android:title="@string/menu_man" />
+        <item
+            android:id="@+id/nav_woman"
+            android:icon="@drawable/ic_female"
+            android:title="@string/menu_woman" />
+
+        <group android:checkableBehavior="single"
+            android:id="@+id/menuBottom">
+            <item android:title="@string/menu_profile">
+                    <item
+                        android:icon="@drawable/ic_baseline_account_box_24"
+                        android:id="@+id/nav_profile"
+                        android:title="@string/menu_profile"/>
+
+                    <item
+                        android:id="@+id/nav_place"
+                        android:icon="@drawable/ic_place"
+                        android:title="@string/menu_place"/>
+
+                    <item
+                        android:id="@+id/nav_cart"
+                        android:icon="@drawable/ic_baseline_shopping_cart_24"
+                        android:title="@string/menu_cart"/>
+            </item>
+        </group>
+    </group>
+</menu>

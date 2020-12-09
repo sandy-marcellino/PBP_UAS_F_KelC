@@ -1,0 +1,1686 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'com.google.gms.google-services'\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n    buildToolsVersion \"30.0.2\"\r\n\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n\r\n    defaultConfig {\r\n        applicationId \"com.pbpkelompok3.shopping\"\r\n        minSdkVersion 26\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    buildFeatures {\r\n        dataBinding true\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'\r\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\r\n    implementation 'androidx.navigation:navigation-fragment:2.3.0'\r\n    implementation 'androidx.navigation:navigation-ui:2.3.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    //firebase\r\n    implementation 'com.google.firebase:firebase-auth:19.4.0'\r\n    implementation 'com.google.firebase:firebase-firestore:21.7.1'\r\n    implementation 'com.google.firebase:firebase-core:17.0.0'\r\n    implementation 'com.google.firebase:firebase-messaging:20.2.4'\r\n    //ROOM\r\n    def room_version = \"2.2.5\"\r\n\r\n    implementation \"androidx.room:room-runtime:$room_version\"\r\n    annotationProcessor \"androidx.room:room-compiler:$room_version\"\r\n\r\n    //RECYCLER VIEW\r\n    implementation \"androidx.recyclerview:recyclerview:1.1.0\"\r\n\r\n    //Card View\r\n    implementation \"androidx.cardview:cardview:1.0.0\"\r\n\r\n    //circular image view\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n\r\n    //MATERIAL DESIGN\r\n    implementation \"com.google.android.material:material:1.1.0\"\r\n\r\n\r\n    // mapbox\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v9:0.12.0'\r\n\r\n    //GSON\r\n    implementation 'com.google.code.gson:gson:2.8.6'\r\n\r\n    //Glide for Image\r\n    implementation 'com.github.bumptech.glide:glide:4.4.0'\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'\r\n\r\n    // retrofit\r\n    implementation 'com.squareup.retrofit2:retrofit:2.1.0'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'\r\n\r\n    //volley\r\n    implementation 'com.android.volley:volley:1.1.0'\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/build.gradle	(date 1607050336879)
+@@ -84,4 +84,8 @@
+ 
+     //volley
+     implementation 'com.android.volley:volley:1.1.0'
++
++    //unit test
++    testCompile 'org.mockito:mockito-all:1.10.19'
++    androidTestImplementation 'androidx.test:rules:1.3.0-beta01'
+ }
+Index: app/src/main/java/com/pbpkelompok3/shopping/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping;\r\n\r\nimport android.app.Activity;\r\nimport android.app.NotificationChannel;\r\nimport android.app.NotificationManager;\r\nimport android.app.PendingIntent;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.text.TextUtils;\r\nimport android.util.Patterns;\r\nimport android.view.View;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.app.NotificationCompat;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.Response;\r\nimport com.android.volley.VolleyError;\r\nimport com.android.volley.toolbox.JsonObjectRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.pbpkelompok3.shopping.api.UserApi;\r\nimport com.pbpkelompok3.shopping.ui.home.HomeFragment;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport static com.android.volley.Request.Method.GET;\r\n\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    private FirebaseAuth.AuthStateListener mAuthStateListener;\r\n    private FirebaseAuth auth;\r\n    TextInputEditText email, password;\r\n    MaterialButton login;\r\n    private String getEmail, getPassword;\r\n    MaterialButton btnSignUp;\r\n\r\n    private String emailUserLogin;\r\n\r\n    private SharedPreferences preferences;\r\n    public static final int mode = Activity.MODE_PRIVATE;\r\n    private String CHANNEL_ID = \"Channel Sign In\";\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_login);\r\n        email = findViewById(R.id.inputEmailSignIn);\r\n        password = findViewById(R.id.inputPasswordSignin);\r\n        login = findViewById(R.id.login);\r\n        btnSignUp = findViewById(R.id.btnSignUp);\r\n        auth =FirebaseAuth.getInstance();\r\n\r\n        btnSignUp.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);\r\n                startActivity(intent);\r\n                finish();\r\n            }\r\n        });\r\n\r\n        login.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                signInAccount();\r\n            }\r\n        });\r\n    }\r\n\r\n    private boolean cekDataUserSignIn(){\r\n        getEmail = email.getText().toString();\r\n        getPassword = password.getText().toString();\r\n        boolean validasi = true;\r\n\r\n        //Mengecek apakah email dan sandi kosong atau tidak\r\n        if(TextUtils.isEmpty(getEmail) || !Patterns.EMAIL_ADDRESS.matcher(getEmail).matches()){\r\n            email.setError(\"Email is Invalid !\");\r\n            validasi=false;\r\n        }\r\n\r\n        //Mengecek panjang karakter password baru yang akan didaftarkan\r\n        if(getPassword.length() == 0){\r\n            password.setError(\"Password is required !\");\r\n            validasi = false;\r\n        }else if(getPassword.length() < 6){\r\n            password.setError(\"Password should be or more than 6 characters !\");\r\n            validasi = false;\r\n        }\r\n        return validasi;\r\n    }\r\n\r\n    private void signInAccount(){\r\n        if(cekDataUserSignIn()){\r\n            auth.signInWithEmailAndPassword(getEmail, getPassword)\r\n                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {\r\n                        @Override\r\n                        public void onComplete(@NonNull Task<AuthResult> task) {\r\n                            if (task.isSuccessful()) {\r\n                                //check verified or not\r\n                                FirebaseUser user = auth.getCurrentUser();\r\n                                if(user.isEmailVerified()){\r\n                                    // Sign in success, update UI with the signed-in user's information\r\n                                    Toast.makeText(LoginActivity.this, \"Sign in Successfull\", Toast.LENGTH_SHORT).show();\r\n                                    login(email.getText().toString());\r\n                                    createNotificationChannel();\r\n                                    addNotification();\r\n                                    String emailAdmin = \"ezjarvis001@gmail.com\";\r\n                                    if(emailAdmin.equalsIgnoreCase(getEmail)) {\r\n                                        Intent i = new Intent(LoginActivity.this, AdminMainActivity.class);\r\n                                        startActivity(i);\r\n                                        finish();\r\n                                    }else {\r\n                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);\r\n                                        startActivity(i);\r\n                                        finish();\r\n                                    }\r\n                                }else{\r\n                                    Toast.makeText(LoginActivity.this, \"Please verified your account first\", Toast.LENGTH_SHORT).show();\r\n                                }\r\n                            } else {\r\n                                // If sign in fails, display a message to the user.\r\n                                Toast.makeText(LoginActivity.this, \"Sign in Unsuccessfull\", Toast.LENGTH_SHORT).show();\r\n                            }\r\n                        }\r\n                    });\r\n        }\r\n    }\r\n\r\n    public void putPreference(){\r\n        preferences  = getSharedPreferences(\"login\", Context.MODE_PRIVATE);\r\n        SharedPreferences.Editor editor = preferences.edit();\r\n        editor.putString(\"email\",email.getText().toString());\r\n        editor.putInt(\"isLogin\",1);\r\n        editor.putString(\"emailLogin\",emailUserLogin);\r\n        editor.commit();\r\n    }\r\n\r\n    private void createNotificationChannel() {\r\n        // NotificationChannel diperlukan untuk API 26+\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {\r\n            CharSequence name = \"Channel Sign In\";\r\n            String description = \"This is Channel Sign In\";\r\n            int importance = NotificationManager.IMPORTANCE_DEFAULT;\r\n            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name,importance);\r\n            channel.setDescription(description);\r\n            // Register the channel with the system; you can't change the importance\r\n            // or other notification behaviors after this\r\n            NotificationManager notificationManager = getSystemService(NotificationManager.class);\r\n            notificationManager.createNotificationChannel(channel);\r\n        }\r\n    }\r\n\r\n    private void addNotification() {\r\n        //konstruktor NotificationCompat.Builder harus diberi CHANNEL_ID untuk API level 26+\r\n        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)\r\n                .setSmallIcon(R.drawable.ic_launcher_background)\r\n                .setContentTitle(\"Hello\")\r\n                .setContentText(\"Welcome, Please enjoy your stay...\")\r\n                .setPriority(NotificationCompat.PRIORITY_DEFAULT);\r\n\r\n        // Membuat intent yang menampilkan notifikasi\r\n        Intent notificationIntent = new Intent(this, HomeFragment.class);\r\n        PendingIntent contentIntent = PendingIntent.getActivities(this,0, new Intent[]{notificationIntent}, PendingIntent.FLAG_UPDATE_CURRENT);\r\n        builder.setContentIntent(contentIntent);\r\n\r\n        // Menampilkan notifikasi\r\n        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);\r\n        manager.notify(0,builder.build());\r\n    }\r\n\r\n    private void login(String email){\r\n        RequestQueue queue = Volley.newRequestQueue(this);\r\n\r\n        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, UserApi.URL_LOGIN+email,null, new Response.Listener<JSONObject>() {\r\n            @Override\r\n            public void onResponse(JSONObject response) {\r\n                try {\r\n\r\n                    if(response.getBoolean(\"status\")){\r\n                        JSONArray jsonarray = response.getJSONArray(\"data\");\r\n                        JSONObject data = jsonarray.getJSONObject(0);\r\n                        emailUserLogin = data.getString(\"email\");\r\n                        putPreference();\r\n                        Toast.makeText(LoginActivity.this, emailUserLogin, Toast.LENGTH_SHORT).show();\r\n                    }else{\r\n                        Toast.makeText(LoginActivity.this, \"Gagal\", Toast.LENGTH_SHORT).show();\r\n                    }\r\n                } catch (JSONException e) {\r\n                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                }\r\n\r\n            }\r\n        }, new Response.ErrorListener() {\r\n            @Override\r\n            public void onErrorResponse(VolleyError error) {\r\n                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n        });\r\n        queue.add(stringRequest);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/LoginActivity.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/LoginActivity.java	(date 1607090722537)
+@@ -4,6 +4,7 @@
+ import android.app.NotificationChannel;
+ import android.app.NotificationManager;
+ import android.app.PendingIntent;
++import android.app.ProgressDialog;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.SharedPreferences;
+@@ -14,30 +15,21 @@
+ import android.view.View;
+ import android.widget.Toast;
+ 
+-import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.app.NotificationCompat;
+ 
+-import com.android.volley.RequestQueue;
+-import com.android.volley.Response;
+-import com.android.volley.VolleyError;
+-import com.android.volley.toolbox.JsonObjectRequest;
+-import com.android.volley.toolbox.Volley;
+-import com.google.android.gms.tasks.OnCompleteListener;
+-import com.google.android.gms.tasks.Task;
+ import com.google.android.material.button.MaterialButton;
+ import com.google.android.material.textfield.TextInputEditText;
+-import com.google.firebase.auth.AuthResult;
+ import com.google.firebase.auth.FirebaseAuth;
+-import com.google.firebase.auth.FirebaseUser;
+-import com.pbpkelompok3.shopping.api.UserApi;
++import com.pbpkelompok3.shopping.api.ApiRequestProdukMan;
++import com.pbpkelompok3.shopping.api.Retroserver;
++import com.pbpkelompok3.shopping.api.UserResponse;
++import com.pbpkelompok3.shopping.database.UserDao;
+ import com.pbpkelompok3.shopping.ui.home.HomeFragment;
+ 
+-import org.json.JSONArray;
+-import org.json.JSONException;
+-import org.json.JSONObject;
+-
+-import static com.android.volley.Request.Method.GET;
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
+ 
+ public class LoginActivity extends AppCompatActivity {
+ 
+@@ -50,7 +42,10 @@
+ 
+     private String emailUserLogin;
+ 
+-    private SharedPreferences preferences;
++    private SharedPreferences.Editor editor;
++    private SharedPreferences sPreferences;
++    public static final String KEY_ID = "id";
++
+     public static final int mode = Activity.MODE_PRIVATE;
+     private String CHANNEL_ID = "Channel Sign In";
+ 
+@@ -62,7 +57,8 @@
+         password = findViewById(R.id.inputPasswordSignin);
+         login = findViewById(R.id.login);
+         btnSignUp = findViewById(R.id.btnSignUp);
+-        auth =FirebaseAuth.getInstance();
++        sPreferences = getSharedPreferences("userPreferences",Context.MODE_PRIVATE);
++//        auth =FirebaseAuth.getInstance();
+ 
+         btnSignUp.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -105,49 +101,18 @@
+ 
+     private void signInAccount(){
+         if(cekDataUserSignIn()){
+-            auth.signInWithEmailAndPassword(getEmail, getPassword)
+-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
+-                        @Override
+-                        public void onComplete(@NonNull Task<AuthResult> task) {
+-                            if (task.isSuccessful()) {
+-                                //check verified or not
+-                                FirebaseUser user = auth.getCurrentUser();
+-                                if(user.isEmailVerified()){
+-                                    // Sign in success, update UI with the signed-in user's information
+-                                    Toast.makeText(LoginActivity.this, "Sign in Successfull", Toast.LENGTH_SHORT).show();
+-                                    login(email.getText().toString());
+-                                    createNotificationChannel();
+-                                    addNotification();
+-                                    String emailAdmin = "ezjarvis001@gmail.com";
+-                                    if(emailAdmin.equalsIgnoreCase(getEmail)) {
+-                                        Intent i = new Intent(LoginActivity.this, AdminMainActivity.class);
+-                                        startActivity(i);
+-                                        finish();
+-                                    }else {
+-                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+-                                        startActivity(i);
+-                                        finish();
+-                                    }
+-                                }else{
+-                                    Toast.makeText(LoginActivity.this, "Please verified your account first", Toast.LENGTH_SHORT).show();
+-                                }
+-                            } else {
+-                                // If sign in fails, display a message to the user.
+-                                Toast.makeText(LoginActivity.this, "Sign in Unsuccessfull", Toast.LENGTH_SHORT).show();
+-                            }
+-                        }
+-                    });
++            login();
+         }
+     }
+ 
+-    public void putPreference(){
+-        preferences  = getSharedPreferences("login", Context.MODE_PRIVATE);
+-        SharedPreferences.Editor editor = preferences.edit();
+-        editor.putString("email",email.getText().toString());
+-        editor.putInt("isLogin",1);
+-        editor.putString("emailLogin",emailUserLogin);
+-        editor.commit();
+-    }
++//    public void putPreference(){
++//        preferences  = getSharedPreferences("login", Context.MODE_PRIVATE);
++//        SharedPreferences.Editor editor = sPreferences.edit();
++//        editor.putString("email",email.getText().toString());
++//        editor.putInt("isLogin",1);
++//        editor.putString("emailLogin",emailUserLogin);
++//        editor.commit();
++//    }
+ 
+     private void createNotificationChannel() {
+         // NotificationChannel diperlukan untuk API 26+
+@@ -182,34 +147,98 @@
+         manager.notify(0,builder.build());
+     }
+ 
+-    private void login(String email){
+-        RequestQueue queue = Volley.newRequestQueue(this);
++    private void login(){
+ 
+-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, UserApi.URL_LOGIN+email,null, new Response.Listener<JSONObject>() {
++        ApiRequestProdukMan apiService = Retroserver.getClient().create(ApiRequestProdukMan.class);
++        Call<UserResponse> login = apiService.login(email.getText().toString(),password.getText().toString());
++        final ProgressDialog progressDialog;
++        progressDialog = new ProgressDialog(this);
++        progressDialog.setMessage("loading...");
++        progressDialog.setTitle("Login to system...");
++        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
++        progressDialog.show();
++        login.enqueue(new Callback<UserResponse>() {
+             @Override
+-            public void onResponse(JSONObject response) {
+-                try {
+-
+-                    if(response.getBoolean("status")){
+-                        JSONArray jsonarray = response.getJSONArray("data");
+-                        JSONObject data = jsonarray.getJSONObject(0);
+-                        emailUserLogin = data.getString("email");
+-                        putPreference();
+-                        Toast.makeText(LoginActivity.this, emailUserLogin, Toast.LENGTH_SHORT).show();
+-                    }else{
+-                        Toast.makeText(LoginActivity.this, "Gagal", Toast.LENGTH_SHORT).show();
++            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
++                progressDialog.dismiss();
++                try{
++//                    Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
++                    String status = response.body().getStatus();
++                    String message = response.body().getMessage();
++                    if(status.equalsIgnoreCase("not-registered")){
++                        Toast.makeText(LoginActivity.this, message,Toast.LENGTH_SHORT).show();
++                    }
++                    if(status.equalsIgnoreCase("fail")){
++                        Toast.makeText(LoginActivity.this, message,Toast.LENGTH_SHORT).show();
++                    }
++                    if(status.equalsIgnoreCase("not-verify")){
++                        Toast.makeText(LoginActivity.this, message,Toast.LENGTH_SHORT).show();
++                    }
++                    if(status.equalsIgnoreCase("success")){
++                        Toast.makeText(LoginActivity.this, response.body().getMessage(),Toast.LENGTH_SHORT).show();
++                        getDataToPreference(response.body().getUsers().get(0));
++                        if(response.body().getUsers().get(0).getEmail().toLowerCase().equalsIgnoreCase("admin@admin.com")){
++                            Intent i = new Intent(LoginActivity.this,AdminMainActivity.class);
++                            startActivity(i);
++                        }else{
++                            createNotificationChannel();
++                            addNotification();
++                            Intent i = new Intent(LoginActivity.this,MainActivity.class);
++                            startActivity(i);
++                        }
+                     }
+-                } catch (JSONException e) {
+-                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
++                } catch (Exception e) {
++                    progressDialog.dismiss();
++                    Toast.makeText(LoginActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                 }
+-
+             }
+-        }, new Response.ErrorListener() {
++
+             @Override
+-            public void onErrorResponse(VolleyError error) {
+-                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
++            public void onFailure(Call<UserResponse> call, Throwable t) {
++                progressDialog.dismiss();
++//                Toast.makeText(LoginActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+             }
+         });
+-        queue.add(stringRequest);
+     }
++
++    public void getDataToPreference(UserDao user){
++        sPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
++        editor = sPreferences.edit();
++        editor.putString(KEY_ID,user.getId());
++        editor.putInt("isLogin",1);
++        editor.commit();
++    }
++
++//    auth.signInWithEmailAndPassword(getEmail, getPassword)
++//            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
++//        @Override
++//        public void onComplete(@NonNull Task<AuthResult> task) {
++//            if (task.isSuccessful()) {
++//                //check verified or not
++//                FirebaseUser user = auth.getCurrentUser();
++//                if(user.isEmailVerified()){
++//                    // Sign in success, update UI with the signed-in user's information
++//                    Toast.makeText(LoginActivity.this, "Sign in Successfull", Toast.LENGTH_SHORT).show();
++//                    login(email.getText().toString());
++//                    createNotificationChannel();
++//                    addNotification();
++//                    String emailAdmin = "ezjarvis001@gmail.com";
++//                    if(emailAdmin.equalsIgnoreCase(getEmail)) {
++//                        Intent i = new Intent(LoginActivity.this, AdminMainActivity.class);
++//                        startActivity(i);
++//                        finish();
++//                    }else {
++//                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
++//                        startActivity(i);
++//                        finish();
++//                    }
++//                }else{
++//                    Toast.makeText(LoginActivity.this, "Please verified your account first", Toast.LENGTH_SHORT).show();
++//                }
++//            } else {
++//                // If sign in fails, display a message to the user.
++//                Toast.makeText(LoginActivity.this, "Sign in Unsuccessfull", Toast.LENGTH_SHORT).show();
++//            }
++//        }
++//    });
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_sign_up.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ScrollView android:layout_height=\"match_parent\"\r\n    android:layout_width=\"match_parent\"\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_margin=\"30dp\"\r\n    tools:context=\"com.pbpkelompok3.shopping.SignUpActivity\">\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        style=\"@style/TextAppearance.MaterialComponents.Headline5\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"@string/sign_up\"\r\n        android:textAlignment=\"center\"\r\n        android:layout_marginTop=\"80dp\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/fullname\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        app:startIconDrawable=\"@drawable/ic_baseline_account_box_24\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/input_Fullname\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:autofillHints=\"\"\r\n            android:hint=\"@string/input_your_name\"\r\n            android:inputType=\"text\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/phoneNumber\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        app:startIconDrawable=\"@drawable/ic_baseline_call_24\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/input_phone\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:autofillHints=\"\"\r\n            android:hint=\"@string/input_your_phone_number\"\r\n            android:inputType=\"number\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/email\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.489\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/phoneNumber\"\r\n        app:startIconDrawable=\"@drawable/ic_baseline_email_24\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/input_email\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:autofillHints=\"\"\r\n            android:hint=\"@string/input_your_email\"\r\n            android:inputType=\"textEmailAddress\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/password\"\r\n        style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:inputType=\"textPassword\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        app:layout_constraintHorizontal_bias=\"0.489\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/email\"\r\n        app:startIconDrawable=\"@drawable/ic_baseline_lock_24\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/input_password\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:autofillHints=\"\"\r\n            android:hint=\"@string/input_your_password\"\r\n            android:inputType=\"textPassword\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <Button\r\n        android:id=\"@+id/btnsign_up\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"@string/sign_up\"/>\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/btnSignIn\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_gravity=\"center\"\r\n        android:background=\"@android:color/transparent\"\r\n        android:text=\"Already have an account ?\"\r\n        android:backgroundTint=\"@android:color/transparent\"\r\n        style=\"?android:attr/borderlessButtonStyle\"\r\n        android:textColor=\"#000\"\r\n        android:textSize=\"12sp\"\r\n        android:layout_marginBottom=\"100dp\"/>\r\n</LinearLayout>\r\n</ScrollView>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_sign_up.xml	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/res/layout/activity_sign_up.xml	(date 1607070319129)
+@@ -1,11 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<ScrollView android:layout_height="match_parent"
++<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_height="match_parent"
+     android:layout_width="match_parent"
+     xmlns:android="http://schemas.android.com/apk/res/android">
+ <LinearLayout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+@@ -28,7 +27,25 @@
+ 
+ 
+     <com.google.android.material.textfield.TextInputLayout
+-        android:id="@+id/fullname"
++        android:id="@+id/first_name"
++        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginBottom="5dp"
++        android:layout_marginTop="16dp"
++        app:startIconDrawable="@drawable/ic_baseline_account_box_24">
++
++        <com.google.android.material.textfield.TextInputEditText
++            android:id="@+id/input_firstName"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:autofillHints=""
++            android:hint="@string/input_your_first_name"
++            android:inputType="text" />
++    </com.google.android.material.textfield.TextInputLayout>
++
++    <com.google.android.material.textfield.TextInputLayout
++        android:id="@+id/last_name"
+         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+@@ -37,11 +54,11 @@
+         app:startIconDrawable="@drawable/ic_baseline_account_box_24">
+ 
+         <com.google.android.material.textfield.TextInputEditText
+-            android:id="@+id/input_Fullname"
++            android:id="@+id/input_lastName"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:autofillHints=""
+-            android:hint="@string/input_your_name"
++            android:hint="@string/input_your_last_name"
+             android:inputType="text" />
+     </com.google.android.material.textfield.TextInputLayout>
+ 
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.api;\r\n\r\nimport com.pbpkelompok3.shopping.model.ResponsModelMan;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.http.Field;\r\nimport retrofit2.http.FormUrlEncoded;\r\nimport retrofit2.http.GET;\r\nimport retrofit2.http.POST;\r\n\r\npublic interface ApiRequestProdukMan {\r\n    @FormUrlEncoded\r\n    @POST(\"ProdukMan\")\r\n    Call<ResponsModelMan> sendProduk(@Field(\"nama_produk\") String nama_produk,\r\n                                     @Field(\"harga_produk\") Double harga_produk,\r\n                                     @Field(\"detail_produk\") String detail_produk,\r\n                                     @Field(\"foto_produk\") String foto_produk,\r\n                                     @Field(\"size\") String size);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/ApiRequestProdukMan.java	(date 1607084698424)
+@@ -7,6 +7,8 @@
+ import retrofit2.http.FormUrlEncoded;
+ import retrofit2.http.GET;
+ import retrofit2.http.POST;
++import retrofit2.http.Path;
++import retrofit2.http.Query;
+ 
+ public interface ApiRequestProdukMan {
+     @FormUrlEncoded
+@@ -17,4 +19,32 @@
+                                      @Field("foto_produk") String foto_produk,
+                                      @Field("size") String size);
+ 
++    @GET("user")
++    Call<UserResponse> getAllUser(@Query("data") String data);
++
++    @GET("user/{email}")
++    Call<UserResponse> getUserByEmail(@Path("id") String email,
++                                      @Query("data") String data);
++
++    @POST("user/update/{id}")
++    @FormUrlEncoded
++    Call<UserResponse> updateUser(@Path("id") String id,
++                                  @Field("first_name") String first_name,
++                                  @Field("last_name") String last_name,
++                                  @Field("email") String email,
++                                  @Field("password") String password,
++                                  @Field("no_telp") String no_telp);
++
++    @POST("register")
++    @FormUrlEncoded
++    Call<UserResponse> register(@Field("first_name") String first_name,
++                                @Field("last_name") String last_name,
++                                @Field("email") String email,
++                                @Field("password") String password,
++                                @Field("no_telp") String no_telp);
++
++    @POST("login")
++    @FormUrlEncoded
++    Call<UserResponse> login(@Field("email") String email,
++                             @Field("password") String password);
+ }
+Index: app/src/main/java/com/pbpkelompok3/shopping/ui/profile/EditProfileFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.ui.profile;\r\n\r\nimport android.Manifest;\r\nimport android.app.ProgressDialog;\r\nimport android.content.ContentValues;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.content.pm.PackageManager;\r\nimport android.graphics.Bitmap;\r\nimport android.net.Uri;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.core.content.ContextCompat;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\nimport androidx.fragment.app.FragmentTransaction;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.Response;\r\nimport com.android.volley.VolleyError;\r\nimport com.android.volley.toolbox.StringRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.bumptech.glide.Glide;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.android.material.textfield.TextInputLayout;\r\nimport com.pbpkelompok3.shopping.R;\r\nimport com.pbpkelompok3.shopping.api.UserApi;\r\nimport com.pbpkelompok3.shopping.model.User;\r\n\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\nimport static android.app.Activity.RESULT_OK;\r\nimport static com.android.volley.Request.Method.PUT;\r\n\r\npublic class EditProfileFragment extends Fragment {\r\n\r\n    private TextInputEditText editName, editUsername, editPhoneNumber;\r\n    private TextInputLayout editPhoneLayout, editNameLayout;\r\n    private MaterialButton updateBtn, cancelBtn, captureBtn;\r\n    private ImageView editProfilePhoto;\r\n    private User user;\r\n    private int storage_requestCode = 1002;\r\n    private Uri image_uri =null;\r\n    private String selected;\r\n    private Bitmap bitmap;\r\n    private static final int PERMISSION_CODE = 1000;\r\n\r\n    public EditProfileFragment() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);\r\n        user = (User) getArguments().getSerializable(\"user_profile\");\r\n\r\n        captureBtn = view.findViewById(R.id.btn_edit_profilePhoto);\r\n\r\n        editName = view.findViewById(R.id.input_name);\r\n        editNameLayout = view.findViewById(R.id.input_name_layout);\r\n        editUsername = view.findViewById(R.id.input_email);\r\n        editPhoneNumber = view.findViewById(R.id.input_phone);\r\n        editPhoneLayout = view.findViewById(R.id.input_phone_layout);\r\n        editProfilePhoto= view.findViewById(R.id.edit_profile_photo);\r\n\r\n        updateBtn = view.findViewById(R.id.btn_update);\r\n        cancelBtn = view.findViewById(R.id.btn_cancel);\r\n\r\n        try {\r\n            if(user.getFull_name() != null) {\r\n                editName.setText(user.getFull_name());\r\n            } else {\r\n                editName.setText(\"-\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        try {\r\n            if(user.getEmail() != null) {\r\n                editUsername.setText(user.getEmail());\r\n            } else {\r\n                editUsername.setText(\"-\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        try {\r\n            if(user.getNo_telp() != null) {\r\n                editPhoneNumber.setText(user.getNo_telp());\r\n            } else {\r\n                editPhoneNumber.setText(\"-\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        try {\r\n            if(user.getFoto_user() != null) {\r\n                Glide.with(getContext())\r\n                        .load(Uri.parse(user.getFoto_user()))\r\n                        .into(editProfilePhoto);\r\n            } else {\r\n                Glide.with(getContext())\r\n                        .load(R.drawable.ic_baseline_account_circle_24)\r\n                        .into(editProfilePhoto);\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return view;\r\n    }\r\n\r\n    @Override\r\n    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {\r\n        super.onViewCreated(view, savedInstanceState);\r\n        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);\r\n        String email = sharedPref.getString(\"email\", \"\");\r\n\r\n        captureBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                // system os >= marshmallow\r\n                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {\r\n                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, storage_requestCode);\r\n                    } else {\r\n                        // permission granted\r\n                        capturePhoto();\r\n                    }\r\n                } else {\r\n                    // system os < marshmallow\r\n                    capturePhoto();\r\n                }\r\n            }\r\n        });\r\n\r\n        updateBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                String image;\r\n                if(CheckValidation()) {\r\n                    if(image_uri == null) {\r\n                        image = user.getFoto_user();\r\n                    } else {\r\n                        image = image_uri.toString();\r\n                    }\r\n                    updateUser(editName.getText().toString(),email,image,editPhoneNumber.getText().toString());\r\n                }\r\n            }\r\n        });\r\n\r\n        cancelBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                FragmentTransaction transaction = getFragmentManager().beginTransaction();\r\n                transaction.replace(R.id.fragment_profile, new profileFragment()).commit();\r\n            }\r\n        });\r\n    }\r\n\r\n    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {\r\n        int width = image.getWidth();\r\n        int height = image.getHeight();\r\n\r\n        float bitmapRatio = (float)width / (float) height;\r\n        if (bitmapRatio > 1) {\r\n            width = maxSize;\r\n            height = (int) (width / bitmapRatio);\r\n        } else {\r\n            height = maxSize;\r\n            width = (int) (height * bitmapRatio);\r\n        }\r\n        return Bitmap.createScaledBitmap(image, width, height, true);\r\n    }\r\n\r\n    public void updateUser(final String full_name, final String email, final String image, final String no_telp) {\r\n        //Pendeklarasian queue\r\n        RequestQueue queue = Volley.newRequestQueue(getContext());\r\n\r\n        final ProgressDialog progressDialog;\r\n        progressDialog = new ProgressDialog(getContext());\r\n        progressDialog.setMessage(\"loading....\");\r\n        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);\r\n        progressDialog.show();\r\n\r\n        StringRequest stringRequest = new StringRequest(PUT, UserApi.URL_UPDATE+email, new Response.Listener<String>() {\r\n            @Override\r\n            public void onResponse(String response) {\r\n                progressDialog.dismiss();\r\n                try {\r\n                    JSONObject obj = new JSONObject(response);\r\n\r\n                    Toast.makeText(getContext(), obj.getString(\"message\"), Toast.LENGTH_SHORT).show();\r\n\r\n                    loadFragment(new profileFragment());\r\n                } catch (JSONException e) {\r\n                    e.printStackTrace();\r\n                }\r\n            }\r\n        }, new Response.ErrorListener() {\r\n            @Override\r\n            public void onErrorResponse(VolleyError error) {\r\n                progressDialog.dismiss();\r\n                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n        }){\r\n            @Override\r\n            protected Map<String, String> getParams()\r\n            {\r\n                Map<String, String>  params = new HashMap<String, String>();\r\n                params.put(\"full_name\", full_name);\r\n                params.put(\"email\", email);\r\n                params.put(\"foto_user\", image);\r\n                params.put(\"no_telp\", no_telp);\r\n\r\n                return params;\r\n            }\r\n        };\r\n        queue.add(stringRequest);\r\n    }\r\n\r\n    public void loadFragment(Fragment fragment) {\r\n        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();\r\n        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();\r\n        if (Build.VERSION.SDK_INT >= 26) {\r\n            fragmentTransaction.setReorderingAllowed(false);\r\n        }\r\n        fragmentTransaction.replace(R.id.edit_profile_fragment, fragment)\r\n                .detach(this)\r\n                .attach(this)\r\n                .commit();\r\n    }\r\n\r\n    private boolean CheckValidation(){\r\n        boolean validation = true;\r\n\r\n        if(editName.getText().toString().isEmpty()){\r\n            editNameLayout.setError(\"Full name cannot be empty\");\r\n            validation = false;\r\n        }\r\n\r\n        if(editPhoneNumber.getText().toString().isEmpty() ||\r\n                String.valueOf(editPhoneNumber.getText()).length() < 8 ){\r\n            editPhoneLayout.setError(\"Phone number must be 8 or more digits\");\r\n            validation = false;\r\n        }\r\n        return validation;\r\n    }\r\n\r\n    @Override\r\n    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {\r\n        super.onRequestPermissionsResult(requestCode, permissions, grantResults);\r\n        if(requestCode == storage_requestCode) {\r\n            if(grantResults[0] == PackageManager.PERMISSION_DENIED) {\r\n                Toast.makeText(getContext(), \"Storage permission denied\", Toast.LENGTH_LONG).show();\r\n            }else{\r\n                capturePhoto();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void capturePhoto() {\r\n        int PHOTO_CAPTURE_CODE = 1003;\r\n        ContentValues values = new ContentValues();\r\n        values.put(MediaStore.Images.Media.TITLE, \"New Profile Photo\");\r\n        values.put(MediaStore.Images.Media.DESCRIPTION, \"From the Camera\");\r\n        image_uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);\r\n        //Camera intent\r\n        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);\r\n        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);\r\n        startActivityForResult(cameraIntent, PHOTO_CAPTURE_CODE);\r\n    }\r\n\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        //Called when photo was captured from camera\r\n        if(resultCode == RESULT_OK) {\r\n            Glide.with(getContext())\r\n                    .load(image_uri)\r\n                    .into(editProfilePhoto);\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/ui/profile/EditProfileFragment.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/ui/profile/EditProfileFragment.java	(date 1607076631392)
+@@ -2,16 +2,17 @@
+ 
+ import android.Manifest;
+ import android.app.ProgressDialog;
+-import android.content.ContentValues;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.SharedPreferences;
+ import android.content.pm.PackageManager;
+ import android.graphics.Bitmap;
++import android.graphics.BitmapFactory;
+ import android.net.Uri;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.provider.MediaStore;
++import android.util.Base64;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -20,7 +21,6 @@
+ 
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+-import androidx.core.content.ContextCompat;
+ import androidx.fragment.app.Fragment;
+ import androidx.fragment.app.FragmentManager;
+ import androidx.fragment.app.FragmentTransaction;
+@@ -30,7 +30,6 @@
+ import com.android.volley.VolleyError;
+ import com.android.volley.toolbox.StringRequest;
+ import com.android.volley.toolbox.Volley;
+-import com.bumptech.glide.Glide;
+ import com.google.android.material.button.MaterialButton;
+ import com.google.android.material.textfield.TextInputEditText;
+ import com.google.android.material.textfield.TextInputLayout;
+@@ -41,6 +40,8 @@
+ import org.json.JSONException;
+ import org.json.JSONObject;
+ 
++import java.io.ByteArrayOutputStream;
++import java.io.InputStream;
+ import java.util.HashMap;
+ import java.util.Map;
+ 
+@@ -54,43 +55,50 @@
+     private MaterialButton updateBtn, cancelBtn, captureBtn;
+     private ImageView editProfilePhoto;
+     private User user;
+-    private int storage_requestCode = 1002;
+-    private Uri image_uri =null;
++    private Uri selectedImage =null;
+     private String selected;
+     private Bitmap bitmap;
++    private String email;
+     private static final int PERMISSION_CODE = 1000;
+ 
+-    public EditProfileFragment() {
+-        // Required empty public constructor
+-    }
+-
+     @Override
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+         user = (User) getArguments().getSerializable("user_profile");
+ 
+-        captureBtn = view.findViewById(R.id.btn_edit_profilePhoto);
++        init(view);
++        setAttribute();
++
++
++        return view;
++    }
++
++    public void init(View view){
+ 
+-        editName = view.findViewById(R.id.input_name);
++        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
++        email = sharedPref.getString("email", "");
++
++//        editName = view.findViewById(R.id.input_name);
+         editNameLayout = view.findViewById(R.id.input_name_layout);
+         editUsername = view.findViewById(R.id.input_email);
+         editPhoneNumber = view.findViewById(R.id.input_phone);
+         editPhoneLayout = view.findViewById(R.id.input_phone_layout);
+         editProfilePhoto= view.findViewById(R.id.edit_profile_photo);
+ 
++        captureBtn = view.findViewById(R.id.btn_edit_profilePhoto);
+         updateBtn = view.findViewById(R.id.btn_update);
+         cancelBtn = view.findViewById(R.id.btn_cancel);
+ 
+-        try {
+-            if(user.getFull_name() != null) {
+-                editName.setText(user.getFull_name());
+-            } else {
+-                editName.setText("-");
+-            }
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-        }
++//        try {
++//            if(user.getFull_name() != null) {
++//                editName.setText(user.getFull_name());
++//            } else {
++//                editName.setText("-");
++//            }
++//        } catch (Exception e) {
++//            e.printStackTrace();
++//        }
+ 
+         try {
+             if(user.getEmail() != null) {
+@@ -112,42 +120,41 @@
+             e.printStackTrace();
+         }
+ 
+-        try {
+-            if(user.getFoto_user() != null) {
+-                Glide.with(getContext())
+-                        .load(Uri.parse(user.getFoto_user()))
+-                        .into(editProfilePhoto);
+-            } else {
+-                Glide.with(getContext())
+-                        .load(R.drawable.ic_baseline_account_circle_24)
+-                        .into(editProfilePhoto);
+-            }
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-        }
+-        return view;
++//        try {
++//            if(user.getFoto_user() != null) {
++//                Glide.with(getContext())
++//                        .load(Uri.parse(user.getFoto_user()))
++//                        .into(editProfilePhoto);
++//            } else {
++//                Glide.with(getContext())
++//                        .load(R.drawable.ic_baseline_account_circle_24)
++//                        .into(editProfilePhoto);
++//            }
++//        } catch (Exception e) {
++//            e.printStackTrace();
++//        }
+     }
+ 
+-    @Override
+-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+-        super.onViewCreated(view, savedInstanceState);
+-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+-        String email = sharedPref.getString("email", "");
+-
++    public void setAttribute(){
+         captureBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                // system os >= marshmallow
+-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+-                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, storage_requestCode);
+-                    } else {
+-                        // permission granted
+-                        capturePhoto();
++                selected="kamera";
++                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
++                {
++                    if(getActivity().checkSelfPermission(Manifest.permission.CAMERA)==
++                            PackageManager.PERMISSION_DENIED ||
++                            getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
++                                    PackageManager.PERMISSION_DENIED){
++                        String[] permission = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
++                        requestPermissions(permission,PERMISSION_CODE);
++                    }
++                    else{
++                        openCamera();
+                     }
+-                } else {
+-                    // system os < marshmallow
+-                    capturePhoto();
++                }
++                else{
++                    openCamera();
+                 }
+             }
+         });
+@@ -155,14 +162,23 @@
+         updateBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                String image;
+-                if(CheckValidation()) {
+-                    if(image_uri == null) {
+-                        image = user.getFoto_user();
+-                    } else {
+-                        image = image_uri.toString();
+-                    }
+-                    updateUser(editName.getText().toString(),email,image,editPhoneNumber.getText().toString());
++
++                String full_name  = editName.getText().toString();
++                String email = editUsername.getText().toString();
++                String no_telp = editPhoneNumber.getText().toString();
++                String imageString = "";
++
++                if(bitmap!=null){
++                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
++                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
++                    byte[] imageBytes = baos.toByteArray();
++                    imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
++                }
++
++                if(full_name.isEmpty() || email.isEmpty() || no_telp.isEmpty())
++                    Toast.makeText(getContext(), "Data Tidak Boleh Kosong !", Toast.LENGTH_SHORT).show();
++                else{
++                    updateUser(full_name,email,imageString,no_telp);
+                 }
+             }
+         });
+@@ -176,6 +192,52 @@
+         });
+     }
+ 
++    private void openCamera() {
++        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
++        startActivityForResult(intent,2);
++    }
++
++    @Override
++    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
++        switch (requestCode){
++            case PERMISSION_CODE:{
++                if(grantResults.length > 0 && grantResults[0] ==
++                        PackageManager.PERMISSION_GRANTED){
++                    if(selected.equals("kamera")){
++                        openCamera();
++                    }
++
++                }else{
++                    Toast.makeText(getContext() ,"Permision denied",Toast.LENGTH_SHORT).show();
++                }
++            }
++        }
++    }
++
++    @Override
++    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
++        super.onActivityResult(requestCode, resultCode, data);
++        if (resultCode == RESULT_OK && requestCode == 1)
++        {
++            selectedImage = data.getData();
++            try {
++                InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
++                bitmap = BitmapFactory.decodeStream(inputStream);
++            } catch (Exception e) {
++                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
++            }
++            editProfilePhoto.setImageBitmap(bitmap);
++            bitmap = getResizedBitmap(bitmap, 512);
++        }
++        else if(resultCode == RESULT_OK && requestCode == 2)
++        {
++            Bundle extras = data.getExtras();
++            bitmap = (Bitmap) extras.get("data");
++            editProfilePhoto.setImageBitmap(bitmap);
++            bitmap = getResizedBitmap(bitmap, 512);
++        }
++    }
++
+     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+         int width = image.getWidth();
+         int height = image.getHeight();
+@@ -201,7 +263,7 @@
+         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+         progressDialog.show();
+ 
+-        StringRequest stringRequest = new StringRequest(PUT, UserApi.URL_UPDATE+email, new Response.Listener<String>() {
++        StringRequest stringRequest = new StringRequest(PUT, UserApi.URL_UPDATE, new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 progressDialog.dismiss();
+@@ -248,54 +310,4 @@
+                 .attach(this)
+                 .commit();
+     }
+-
+-    private boolean CheckValidation(){
+-        boolean validation = true;
+-
+-        if(editName.getText().toString().isEmpty()){
+-            editNameLayout.setError("Full name cannot be empty");
+-            validation = false;
+-        }
+-
+-        if(editPhoneNumber.getText().toString().isEmpty() ||
+-                String.valueOf(editPhoneNumber.getText()).length() < 8 ){
+-            editPhoneLayout.setError("Phone number must be 8 or more digits");
+-            validation = false;
+-        }
+-        return validation;
+-    }
+-
+-    @Override
+-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+-        if(requestCode == storage_requestCode) {
+-            if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+-                Toast.makeText(getContext(), "Storage permission denied", Toast.LENGTH_LONG).show();
+-            }else{
+-                capturePhoto();
+-            }
+-        }
+-    }
+-
+-    private void capturePhoto() {
+-        int PHOTO_CAPTURE_CODE = 1003;
+-        ContentValues values = new ContentValues();
+-        values.put(MediaStore.Images.Media.TITLE, "New Profile Photo");
+-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+-        image_uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+-        //Camera intent
+-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+-        startActivityForResult(cameraIntent, PHOTO_CAPTURE_CODE);
+-    }
+-
+-    @Override
+-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+-        //Called when photo was captured from camera
+-        if(resultCode == RESULT_OK) {
+-            Glide.with(getContext())
+-                    .load(image_uri)
+-                    .into(editProfilePhoto);
+-        }
+-    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginService.java	(date 1607092091186)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginService.java	(date 1607092091186)
+@@ -0,0 +1,58 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import com.pbpkelompok3.shopping.api.ApiRequestProdukMan;
++import com.pbpkelompok3.shopping.api.Retroserver;
++import com.pbpkelompok3.shopping.api.UserResponse;
++import com.pbpkelompok3.shopping.database.UserDao;
++
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++
++public class LoginService {
++    public void Login(final LoginView view, String email, String password, final LoginCallBack callBack) {
++        ApiRequestProdukMan apiService = Retroserver.getClient().create(ApiRequestProdukMan.class);
++        Call<UserResponse> login = apiService.login(email, password);
++        login.enqueue(new Callback<UserResponse>() {
++            @Override
++            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
++                    String status = response.body().getStatus();
++                    String message = response.body().getMessage();
++                    if (status.equalsIgnoreCase("not-registered")) {
++                        view.showLoginError(response.body().getMessage());
++                        callBack.onError();
++                    }
++                    if (status.equalsIgnoreCase("fail")) {
++                        view.showLoginError(response.body().getMessage());
++                        callBack.onError();
++                    }
++                    if (status.equalsIgnoreCase("not-verify")) {
++                        view.showLoginError(response.body().getMessage());
++                        callBack.onError();
++                    }
++                    if (status.equalsIgnoreCase("success")) {
++                        callBack.onSuccess(true, response.body().getUsers().get(0));
++                    }
++            }
++            @Override
++            public void onFailure(Call<UserResponse> call, Throwable t) {
++                    view.showErrorResponse(t.getMessage());
++                    callBack.onError();
++            }
++        });
++    }
++    public Boolean getValid(final LoginView view, String email, String password){
++        final Boolean[] bool = new Boolean[1];
++        Login(view, email, password, new LoginCallBack() {
++            @Override
++            public void onSuccess(boolean value, UserDao user) {
++                bool[0] = true;
++            }
++            @Override
++            public void onError() {
++                bool[0] = false;
++            }
++        });
++        return bool[0];
++    }
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginCallBack.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginCallBack.java	(date 1607091211677)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginCallBack.java	(date 1607091211677)
+@@ -0,0 +1,8 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import com.pbpkelompok3.shopping.database.UserDao;
++
++public interface LoginCallBack {
++    void onSuccess(boolean value, UserDao user);
++    void onError();
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginView.java	(date 1607092291369)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginView.java	(date 1607092291369)
+@@ -0,0 +1,15 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import com.pbpkelompok3.shopping.database.UserDao;
++
++public interface LoginView {
++    String getEmail();
++    void showNimError(String message);
++    String getPassword();
++    void showPasswordError(String message);
++    void startMainActivity();
++    void startUserProfileActivity(UserDao user);
++    void showLoginError(String message);
++    void showErrorResponse(String message);
++
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/UserResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/UserResponse.java	(date 1607090560484)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/UserResponse.java	(date 1607090560484)
+@@ -0,0 +1,42 @@
++package com.pbpkelompok3.shopping.api;
++
++import com.google.gson.annotations.Expose;
++import com.google.gson.annotations.SerializedName;
++import com.pbpkelompok3.shopping.database.UserDao;
++
++import java.util.List;
++
++public class UserResponse {
++    @SerializedName("data")
++    @Expose
++    private List<UserDao> users = null;
++    public List<UserDao> getUsers(){
++        return users;
++    }
++
++    @SerializedName("status")
++    @Expose
++    private String status;
++    public String getStatus(){
++        return status;
++    }
++
++
++    @SerializedName("message")
++    @Expose
++    private String message;
++
++    public String getMessage(){
++        return message;
++    }
++
++
++//
++//    public void setUsers(List<UserDao> users){
++//        this.users = users;
++//    }
++//
++//    public void setMessage(String message) {
++//        this.message = message;
++//    }
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/Retroserver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.api;\r\n\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class Retroserver {\r\n\r\n    private static final String base_url = \"http://pbpkelompokcf.000webhostapp.com/api/\";\r\n\r\n    private static Retrofit retrofit;\r\n\r\n    public static Retrofit getClient()\r\n    {\r\n        if(retrofit == null)\r\n        {\r\n            retrofit = new Retrofit.Builder()\r\n                    .baseUrl(base_url)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .build();\r\n        }\r\n        return retrofit;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/Retroserver.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/Retroserver.java	(date 1607082597230)
+@@ -5,9 +5,9 @@
+ 
+ public class Retroserver {
+ 
+-    private static final String base_url = "http://pbpkelompokcf.000webhostapp.com/api/";
++    private static final String base_url = "http://pbpgalaxystore.xyz/api/";
+ 
+-    private static Retrofit retrofit;
++    private static Retrofit retrofit = null;
+ 
+     public static Retrofit getClient()
+     {
+Index: app/src/main/java/com/pbpkelompok3/shopping/database/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/database/UserDao.java	(date 1607067706972)
++++ app/src/main/java/com/pbpkelompok3/shopping/database/UserDao.java	(date 1607067706972)
+@@ -0,0 +1,80 @@
++package com.pbpkelompok3.shopping.database;
++
++import com.google.gson.annotations.SerializedName;
++
++public class UserDao {
++    @SerializedName("id")
++    private String id;
++
++    @SerializedName("first_name")
++    private String first_name;
++
++    @SerializedName("last_name")
++    private String last_name;
++
++    @SerializedName("email")
++    private String email;
++
++    @SerializedName("password")
++    private String password;
++
++    @SerializedName("no_telp")
++    private String no_telp;
++
++    public UserDao(String id, String first_name, String last_name, String email, String password, String no_telp) {
++        this.id = id;
++        this.first_name = first_name;
++        this.last_name = last_name;
++        this.email = email;
++        this.password = password;
++        this.no_telp = no_telp;
++    }
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getFirst_name() {
++        return first_name;
++    }
++
++    public void setFirst_name(String first_name) {
++        this.first_name = first_name;
++    }
++
++    public String getLast_name() {
++        return last_name;
++    }
++
++    public void setLast_name(String last_name) {
++        this.last_name = last_name;
++    }
++
++    public String getEmail() {
++        return email;
++    }
++
++    public void setEmail(String email) {
++        this.email = email;
++    }
++
++    public String getPassword() {
++        return password;
++    }
++
++    public void setPassword(String password) {
++        this.password = password;
++    }
++
++    public String getNo_telp() {
++        return no_telp;
++    }
++
++    public void setNo_telp(String no_telp) {
++        this.no_telp = no_telp;
++    }
++}
+Index: app/src/main/res/layout/fragment_edit_profile.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ScrollView\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/scrollView\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:fillViewport=\"true\" >\r\n\r\n<LinearLayout\r\n    android:id=\"@+id/edit_profile_fragment\"\r\nandroid:layout_width=\"match_parent\"\r\nandroid:layout_height=\"match_parent\"\r\nandroid:background=\"#FFFF\"\r\nandroid:orientation=\"vertical\"\r\ntools:context=\"com.pbpkelompok3.shopping.ui.profile.EditProfileFragment\">\r\n\r\n<TextView\r\n    android:layout_width=\"wrap_content\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_marginTop=\"20dp\"\r\n    android:layout_gravity=\"center\"\r\n    style=\"@style/TextAppearance.MaterialComponents.Headline5\"\r\n    android:text=\"@string/edit_profile\" />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/edit_profile_photo\"\r\n        android:layout_width=\"150dp\"\r\n        android:layout_height=\"150dp\"\r\n        android:layout_gravity=\"center\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:scaleType=\"centerCrop\"\r\n        android:src=\"@drawable/ic_baseline_account_circle_24\"/>\r\n\r\n<com.google.android.material.button.MaterialButton\r\n    android:id=\"@+id/btn_edit_profilePhoto\"\r\n    android:layout_width=\"wrap_content\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_marginTop=\"15dp\"\r\n    android:layout_gravity=\"center\"\r\n    android:text=\"@string/edit_profile_picture\"/>\r\n\r\n<com.google.android.material.textfield.TextInputLayout\r\n    android:id=\"@+id/input_email_layout\"\r\n    android:layout_marginTop=\"40dp\"\r\n    android:layout_marginStart=\"16dp\"\r\n    android:layout_marginEnd=\"16dp\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n\r\n    style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\">\r\n\r\n    <com.google.android.material.textfield.TextInputEditText\r\n        android:id=\"@+id/input_email\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:autofillHints=\"\"\r\n        android:hint=\"@string/input_your_email\"\r\n        android:inputType=\"text\"\r\n        android:enabled=\"false\"/>\r\n\r\n</com.google.android.material.textfield.TextInputLayout>\r\n\r\n<com.google.android.material.textfield.TextInputLayout\r\n    android:id=\"@+id/input_name_layout\"\r\n    android:layout_marginTop=\"25dp\"\r\n    android:layout_marginStart=\"16dp\"\r\n    android:layout_marginEnd=\"16dp\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\">\r\n\r\n    <com.google.android.material.textfield.TextInputEditText\r\n        android:id=\"@+id/input_name\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:autofillHints=\"\"\r\n        android:hint=\"@string/input_your_name\"\r\n        android:inputType=\"text\" />\r\n\r\n</com.google.android.material.textfield.TextInputLayout>\r\n\r\n\r\n<com.google.android.material.textfield.TextInputLayout\r\n    android:id=\"@+id/input_phone_layout\"\r\n    android:layout_marginTop=\"25dp\"\r\n    android:layout_marginStart=\"16dp\"\r\n    android:layout_marginEnd=\"16dp\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense\">\r\n\r\n    <com.google.android.material.textfield.TextInputEditText\r\n        android:id=\"@+id/input_phone\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:autofillHints=\"\"\r\n        android:hint=\"@string/input_your_phone_number\"\r\n        android:inputType=\"number\"/>\r\n\r\n</com.google.android.material.textfield.TextInputLayout>\r\n\r\n<LinearLayout\r\n    android:orientation=\"horizontal\"\r\n    android:layout_marginTop=\"50dp\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\">\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/btn_cancel\"\r\n        android:text=\"@string/cancel\"\r\n        android:layout_weight=\"0.8\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:layout_marginStart=\"16dp\"\r\n        android:backgroundTint=\"#ED2B2A\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"/>\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/btn_update\"\r\n        android:text=\"@string/update_profile\"\r\n        android:layout_weight=\"0.8\"\r\n        android:layout_marginEnd=\"16dp\"\r\n        android:backgroundTint=\"#006400\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"/>\r\n</LinearLayout>\r\n\r\n</LinearLayout>\r\n</ScrollView>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_edit_profile.xml	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/res/layout/fragment_edit_profile.xml	(date 1607069812647)
+@@ -71,13 +71,13 @@
+     android:layout_height="wrap_content"
+     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+ 
+-    <com.google.android.material.textfield.TextInputEditText
+-        android:id="@+id/input_name"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:autofillHints=""
+-        android:hint="@string/input_your_name"
+-        android:inputType="text" />
++<!--    <com.google.android.material.textfield.TextInputEditText-->
++<!--        android:id="@+id/input_name"-->
++<!--        android:layout_width="match_parent"-->
++<!--        android:layout_height="wrap_content"-->
++<!--        android:autofillHints=""-->
++<!--        android:hint="@string/input_your_name"-->
++<!--        android:inputType="text" />-->
+ 
+ </com.google.android.material.textfield.TextInputLayout>
+ 
+Index: app/src/main/java/com/pbpkelompok3/shopping/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.model;\r\n\r\nimport java.io.Serializable;\r\n\r\npublic class User implements Serializable {\r\n    private String full_name,email, no_telp, foto_user, password;\r\n\r\n    public User(String full_name, String email, String no_telp, String foto_user, String password) {\r\n        this.full_name = full_name;\r\n        this.email = email;\r\n        this.no_telp = no_telp;\r\n        this.foto_user = foto_user;\r\n        this.password = password;\r\n    }\r\n\r\n    public String getFull_name() {\r\n        return full_name;\r\n    }\r\n\r\n    public void setFull_name(String full_name) {\r\n        this.full_name = full_name;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n\r\n    public String getNo_telp() {\r\n        return no_telp;\r\n    }\r\n\r\n    public void setNo_telp(String no_telp) {\r\n        this.no_telp = no_telp;\r\n    }\r\n\r\n    public String getFoto_user() {\r\n        return foto_user;\r\n    }\r\n\r\n    public void setFoto_user(String foto_user) {\r\n        this.foto_user = foto_user;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/model/User.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/model/User.java	(date 1607076033731)
+@@ -3,22 +3,30 @@
+ import java.io.Serializable;
+ 
+ public class User implements Serializable {
+-    private String full_name,email, no_telp, foto_user, password;
++    private String first_name,last_name, email, password, no_telp;
+ 
+-    public User(String full_name, String email, String no_telp, String foto_user, String password) {
+-        this.full_name = full_name;
++    public User(String first_name, String last_name, String email, String password, String no_telp) {
++        this.first_name = first_name;
++        this.last_name = last_name;
+         this.email = email;
+-        this.no_telp = no_telp;
+-        this.foto_user = foto_user;
+         this.password = password;
++        this.no_telp = no_telp;
++    }
++
++    public String getFirst_name() {
++        return first_name;
++    }
++
++    public void setFirst_name(String first_name) {
++        this.first_name = first_name;
+     }
+ 
+-    public String getFull_name() {
+-        return full_name;
++    public String getLast_name() {
++        return last_name;
+     }
+ 
+-    public void setFull_name(String full_name) {
+-        this.full_name = full_name;
++    public void setLast_name(String last_name) {
++        this.last_name = last_name;
+     }
+ 
+     public String getEmail() {
+@@ -29,22 +37,6 @@
+         this.email = email;
+     }
+ 
+-    public String getNo_telp() {
+-        return no_telp;
+-    }
+-
+-    public void setNo_telp(String no_telp) {
+-        this.no_telp = no_telp;
+-    }
+-
+-    public String getFoto_user() {
+-        return foto_user;
+-    }
+-
+-    public void setFoto_user(String foto_user) {
+-        this.foto_user = foto_user;
+-    }
+-
+     public String getPassword() {
+         return password;
+     }
+@@ -52,4 +44,12 @@
+     public void setPassword(String password) {
+         this.password = password;
+     }
++
++    public String getNo_telp() {
++        return no_telp;
++    }
++
++    public void setNo_telp(String no_telp) {
++        this.no_telp = no_telp;
++    }
+ }
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenter.java	(date 1607095768239)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenter.java	(date 1607095768239)
+@@ -0,0 +1,43 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import com.pbpkelompok3.shopping.database.UserDao;
++
++public class LoginPresenter {
++    private LoginView view;
++    private LoginService service;
++    private LoginCallBack callback;
++    public LoginPresenter(LoginView view, LoginService service) {
++        this.view = view;
++        this.service = service;
++    }
++    public void onLoginClicked() {
++        if (view.getEmail().isEmpty()) {
++            view.showNimError("Email tidak boleh kosong");
++            return;
++        } else if (view.getPassword().isEmpty()) {
++            view.showPasswordError("Password tidak boleh kosong");
++            return;
++        } else if(view.getPassword().length()<6) {
++            view.showPasswordError("Password minimal 6 karakter");
++//        }else if(!Patterns.EMAIL_ADDRESS.matcher(view.getEmail()).matches()) {
++//            view.showNimError("Email Invalid");
++        }else{
++            service.Login(view, view.getEmail(), view.getPassword(), new
++                    LoginCallBack() {
++                        @Override
++                        public void onSuccess(boolean value, UserDao user) {
++                            if (user.getEmail().equalsIgnoreCase("admin@admin.com")) {
++                                view.startMainActivity();
++                            } else {
++                                view.startUserProfileActivity(user);
++                            }
++                        }
++
++                        @Override
++                        public void onError() {
++                        }
++                    });
++            return;
++        }
++    }
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/ActivityUtil.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/ActivityUtil.java	(date 1607092668301)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/ActivityUtil.java	(date 1607092668301)
+@@ -0,0 +1,28 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import android.content.Context;
++import android.content.Intent;
++
++import com.pbpkelompok3.shopping.AdminMainActivity;
++import com.pbpkelompok3.shopping.MainActivity;
++import com.pbpkelompok3.shopping.database.UserDao;
++
++public class ActivityUtil {
++    private Context context;
++    public ActivityUtil(Context context) {
++        this.context = context;
++    }
++    public void startMainActivity() {
++        context.startActivity(new Intent(context, AdminMainActivity.class));
++    }
++    public void startUserProfile(UserDao user) {
++        Intent i = new Intent(context, MainActivity.class);
++        i.putExtra("id",user.getId());
++        i.putExtra("first_name",user.getFirst_name());
++        i.putExtra("last_name",user.getLast_name());
++        i.putExtra("email",user.getEmail());
++        i.putExtra("password",user.getPassword());
++        i.putExtra("no_telp",user.getNo_telp());
++        context.startActivity(i);
++    }
++}
+Index: app/src/test/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenterTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/test/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenterTest.java	(date 1607097516048)
++++ app/src/test/java/com/pbpkelompok3/shopping/UnitTest/Login/LoginPresenterTest.java	(date 1607097516048)
+@@ -0,0 +1,94 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import org.junit.Before;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++import org.mockito.Mock;
++import org.mockito.runners.MockitoJUnitRunner;
++import static org.mockito.Mockito.verify;
++import static org.mockito.Mockito.when;
++@RunWith(MockitoJUnitRunner.class)
++public class LoginPresenterTest {
++    @Mock
++    private LoginView view;
++    @Mock
++    private LoginService service;
++    private LoginPresenter presenter;
++    @Before
++    public void setUp() throws Exception {
++        presenter = new LoginPresenter(view, service);
++    }
++    @Test
++    public void shouldValidWhenUsernameAndPasswordValid() throws Exception {
++        when(view.getEmail()).thenReturn("admin@admin.com");
++        System.out.println("Email : "+view.getEmail());
++        when(view.getPassword()).thenReturn("rahasianegara");
++        System.out.println("Password : "+view.getPassword());
++        when(service.getValid(view, view.getEmail(),
++                view.getPassword())).thenReturn(true);
++        System.out.println("Hasil : "+service.getValid(view,view.getEmail(),
++                view.getPassword()));
++        presenter.onLoginClicked();
++    }
++    @Test
++    public void shouldShowErrorMessageWhenEmailIsInvalid() throws Exception {
++        when(view.getEmail()).thenReturn("admin@g");
++        System.out.println("Email : "+view.getEmail());
++        when(view.getPassword()).thenReturn("admin123");
++        System.out.println("Password : "+view.getPassword());
++        when(service.getValid(view, view.getEmail(),
++                view.getPassword())).thenReturn(false);
++        System.out.println("Hasil : "+service.getValid(view,view.getEmail(),
++                view.getPassword()));
++        presenter.onLoginClicked();
++    }
++
++    @Test
++    public void shouldShowErrorMessageWhenPasswordIsInvalid() throws Exception {
++        when(view.getEmail()).thenReturn("admin@admin.com");
++        System.out.println("Email : "+view.getEmail());
++        when(view.getPassword()).thenReturn("admin");
++        System.out.println("Password : "+view.getPassword());
++        presenter.onLoginClicked();
++        verify(view).showPasswordError("Password harus minimal 6 karakter");
++    }
++
++    @Test
++    public void shouldStartActivityWhenLoginSuccess() throws Exception {
++        when(view.getEmail()).thenReturn("admin@admin.com");
++        System.out.println("Email : "+view.getEmail());
++        when(view.getPassword()).thenReturn("admin123");
++        System.out.println("Password : "+view.getPassword());
++        when(service.getValid(view, view.getEmail(),
++                view.getPassword())).thenReturn(true);
++        System.out.println("Hasil : "+service.getValid(view,view.getEmail(),
++                view.getPassword()));
++        presenter.onLoginClicked();
++    }
++    @Test
++    public void shouldShowErrorMessageWhenNotMatch() throws Exception {
++        when(view.getEmail()).thenReturn("admin@admin.com");
++        System.out.println("Email : "+ view.getEmail());
++        when(view.getPassword()).thenReturn("admin12345");
++        System.out.println("password : "+view.getPassword());
++        when(service.getValid(view, view.getEmail(),
++                view.getPassword())).thenReturn(false);
++        System.out.println("Hasil : "+service.getValid(view,view.getEmail(),
++                view.getPassword()));
++        presenter.onLoginClicked();
++    }
++    @Test
++    public void shouldShowErrorMessageWhenAccountNotRegister() throws
++            Exception {
++        when(view.getEmail()).thenReturn("180709652@gmail.com");
++        System.out.println("email : "+view.getEmail());
++        when(view.getPassword()).thenReturn("admin123");
++        System.out.println("password : "+view.getPassword());
++        when(service.getValid(view, view.getEmail(),
++                view.getPassword())).thenReturn(false);
++        System.out.println("Hasil : "+service.getValid(view,view.getEmail(),
++                view.getPassword()));
++        presenter.onLoginClicked();
++    }
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/Login.java	(date 1607092904241)
++++ app/src/main/java/com/pbpkelompok3/shopping/UnitTest/Login/Login.java	(date 1607092904241)
+@@ -0,0 +1,67 @@
++package com.pbpkelompok3.shopping.UnitTest.Login;
++
++import android.os.Bundle;
++import android.view.View;
++import android.widget.Toast;
++
++import androidx.appcompat.app.AppCompatActivity;
++
++import com.google.android.material.button.MaterialButton;
++import com.google.android.material.textfield.TextInputEditText;
++import com.pbpkelompok3.shopping.R;
++import com.pbpkelompok3.shopping.database.UserDao;
++
++import static android.widget.Toast.LENGTH_SHORT;
++
++public class Login extends AppCompatActivity implements LoginView {
++    private MaterialButton btnLogin;
++    private TextInputEditText email, password;
++    private LoginPresenter presenter;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_login);
++        btnLogin = findViewById(R.id.login);
++        email = findViewById(R.id.input_email);
++        password = findViewById(R.id.password);
++        presenter = new LoginPresenter(this, new LoginService());
++        btnLogin.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                presenter.onLoginClicked();
++            }
++        });
++    }
++    @Override
++    public String getEmail() {
++        return email.getText().toString();
++    }
++    @Override
++    public void showNimError(String message) {
++        email.setError(message);
++    }
++    @Override
++    public String getPassword() {
++        return password.getText().toString();
++    }
++    @Override
++    public void showPasswordError(String message) {
++        password.setError(message);
++    }
++    @Override
++    public void startMainActivity() {
++        new ActivityUtil(this).startMainActivity();
++    }
++    @Override
++    public void startUserProfileActivity(UserDao user) {
++        new ActivityUtil(this).startUserProfile(user);
++    }
++    @Override
++    public void showLoginError(String message) {
++        Toast.makeText(this, message, LENGTH_SHORT).show();
++    }
++    @Override
++    public void showErrorResponse(String message) {
++        Toast.makeText(this, message, LENGTH_SHORT).show();
++    }
++}
+Index: app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping;\r\n\r\nimport android.app.NotificationChannel;\r\nimport android.app.NotificationManager;\r\nimport android.app.PendingIntent;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.text.TextUtils;\r\nimport android.util.Patterns;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.core.app.NotificationCompat;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.Response;\r\nimport com.android.volley.VolleyError;\r\nimport com.android.volley.toolbox.StringRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.google.android.material.textfield.TextInputLayout;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.pbpkelompok3.shopping.api.UserApi;\r\n\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\nimport static com.android.volley.Request.Method.POST;\r\n\r\npublic class SignUpActivity extends AppCompatActivity {\r\n\r\n    private String getEmail,getPassword,getFullname, getPhoneNumber;\r\n    private TextInputEditText fullname, phoneNumber, email, password;\r\n    private TextInputLayout fullnameLayout, phoneNumberLayout, emailLayout, passwordLayout;\r\n    private Button btnSignup,btnSignIn;\r\n    private FirebaseAuth.AuthStateListener mAuthStateListener;\r\n    private FirebaseAuth auth;\r\n    private String CHANNEL_ID = \"Channel Sign Up\";\r\n\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_sign_up);\r\n\r\n        auth =FirebaseAuth.getInstance();\r\n        fullname = findViewById(R.id.input_Fullname);\r\n        phoneNumber = findViewById(R.id.input_phone);\r\n        email = findViewById(R.id.input_email);\r\n        password = findViewById(R.id.input_password);\r\n\r\n        fullnameLayout = findViewById(R.id.fullname);\r\n        phoneNumberLayout = findViewById(R.id.phoneNumber);\r\n        emailLayout = findViewById(R.id.email);\r\n        passwordLayout = findViewById(R.id.password);\r\n\r\n        btnSignIn = findViewById(R.id.btnSignIn);\r\n        btnSignup = findViewById(R.id.btnsign_up);\r\n\r\n        btnSignup.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                if(cekDataUserSignUp()) {\r\n                    auth.createUserWithEmailAndPassword(getEmail,getPassword)\r\n                            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {\r\n                                @Override\r\n                                public void onComplete(@NonNull Task<AuthResult> task) {\r\n                                    if(task.isSuccessful()) {\r\n                                        //send verification link\r\n                                        FirebaseUser user = auth.getCurrentUser();\r\n                                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                                            @Override\r\n                                            public void onSuccess(Void aVoid) {\r\n                                                Toast.makeText(SignUpActivity.this, \"Verification Link has been sent to your email address\", Toast.LENGTH_SHORT).show();\r\n                                            }\r\n                                        }).addOnFailureListener(new OnFailureListener() {\r\n                                            @Override\r\n                                            public void onFailure(@NonNull Exception e) {\r\n                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();\r\n                                            }\r\n                                        });\r\n                                        FirebaseUser fUser = auth.getCurrentUser();\r\n\r\n                                        tambahUser(fullname.getText().toString(),email.getText().toString(),\"\",\r\n                                                    phoneNumber.getText().toString(), password.getText().toString());\r\n                                        createNotificationChannel();\r\n                                        addNotification();\r\n                                        Intent i = new Intent(SignUpActivity.this,LoginActivity.class);\r\n                                        startActivity(i);\r\n                                    }else {\r\n                                        Toast.makeText(SignUpActivity.this, \"Register Failed :  \"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();\r\n                                    }\r\n                                }\r\n                            });\r\n                }\r\n            }\r\n        });\r\n\r\n        btnSignIn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent i = new Intent(SignUpActivity.this,LoginActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n    }\r\n\r\n    private boolean cekDataUserSignUp(){\r\n        //Mendapatkan data yang diinputkan User\r\n        getEmail = email.getText().toString();\r\n        getPassword = password.getText().toString();\r\n        getFullname = fullname.getText().toString();\r\n        getPhoneNumber = phoneNumber.getText().toString();\r\n\r\n        boolean validation = true;\r\n\r\n        //Mengecek apakah email dan sandi kosong atau tidak\r\n        if(TextUtils.isEmpty(getEmail) || !Patterns.EMAIL_ADDRESS.matcher(getEmail).matches()){\r\n            email.setError(\"Email is Invalid\");\r\n            validation = false;\r\n        }\r\n        //Mengecek panjang karakter password baru yang akan didaftarkan\r\n        if(getPassword.length() == 0 ){\r\n            password.setError(\"Password is Required\");\r\n            validation = false;\r\n        }\r\n        if(getFullname.length()==0){\r\n            fullname.setError(\"Fullname is required\");\r\n            validation = false;\r\n        }\r\n\r\n        if (getPassword.length() < 6){\r\n            password.setError(\"Password should be 6 characters\");\r\n            validation = false;\r\n        }\r\n\r\n        if(getPhoneNumber.length()==0){\r\n            phoneNumber.setError(\"Phone Number is Required\");\r\n            validation = false;\r\n        } else if(getPhoneNumber.length()<10 || getPhoneNumber.length()>13){\r\n            phoneNumber.setError(\"Phone Number is invalid\");\r\n            validation = false;\r\n        }\r\n        return validation;\r\n    }\r\n\r\n    public void tambahUser(final String nama, final String email, final String image, final String noTelp, final String password){\r\n        //deklarasi queue\r\n        RequestQueue queue = Volley.newRequestQueue(this);\r\n\r\n        StringRequest stringRequest = new StringRequest(POST, UserApi.URL_REGISTER, new Response.Listener<String>() {\r\n            @Override\r\n            public void onResponse(String response) {\r\n                try {\r\n                    JSONObject obj = new JSONObject(response);\r\n                    Toast.makeText(SignUpActivity.this, obj.getString(\"message\"), Toast.LENGTH_SHORT).show();\r\n                } catch (JSONException e) {\r\n                    e.printStackTrace();\r\n                }\r\n            }\r\n        }, new Response.ErrorListener() {\r\n            @Override\r\n            public void onErrorResponse(VolleyError error) {\r\n                //Disini bagian jika response jaringan terdapat gangguan/error\r\n                Toast.makeText(SignUpActivity.this, error.getMessage() , Toast.LENGTH_SHORT).show();\r\n            }\r\n        }){\r\n            @Override\r\n            protected Map<String, String> getParams(){\r\n                Map<String,String> params = new HashMap<String, String>();\r\n                params.put(\"full_name\",nama);\r\n                params.put(\"email\",email);\r\n                params.put(\"no_telp\",noTelp);\r\n                params.put(\"foto_user\",image);\r\n                params.put(\"password\",password);\r\n                return params;\r\n            }\r\n        };\r\n        //Disini proses penambahan request yang sudah kita buat ke request queue yang sudah dideklarasi\r\n        queue.add(stringRequest);\r\n    }\r\n\r\n    private void createNotificationChannel() {\r\n        // NotificationChannel diperlukan untuk API 26+\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {\r\n            CharSequence name = \"Channel Sign In\";\r\n            String description = \"This is Channel Sign Up\";\r\n            int importance = NotificationManager.IMPORTANCE_DEFAULT;\r\n            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name,importance);\r\n            channel.setDescription(description);\r\n            // Register the channel with the system; you can't change the importance\r\n            // or other notification behaviors after this\r\n            NotificationManager notificationManager = getSystemService(NotificationManager.class);\r\n            notificationManager.createNotificationChannel(channel);\r\n        }\r\n    }\r\n\r\n    private void addNotification() {\r\n        //konstruktor NotificationCompat.Builder harus diberi CHANNEL_ID untuk API level 26+\r\n        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)\r\n                .setSmallIcon(R.drawable.ic_launcher_background)\r\n                .setContentTitle(\"Congratulation \")\r\n                .setContentText(\"Register succesfull, verified your account for login !\")\r\n                .setPriority(NotificationCompat.PRIORITY_DEFAULT);\r\n\r\n        // Membuat intent yang menampilkan notifikasi\r\n        Intent notificationIntent = new Intent(this, LoginActivity.class);\r\n        PendingIntent contentIntent = PendingIntent.getActivities(this,0, new Intent[]{notificationIntent}, PendingIntent.FLAG_UPDATE_CURRENT);\r\n        builder.setContentIntent(contentIntent);\r\n\r\n        // Menampilkan notifikasi\r\n        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);\r\n        manager.notify(0,builder.build());\r\n    }\r\n\r\n    \r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/SignUpActivity.java	(date 1607087382549)
+@@ -3,6 +3,7 @@
+ import android.app.NotificationChannel;
+ import android.app.NotificationManager;
+ import android.app.PendingIntent;
++import android.app.ProgressDialog;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Build;
+@@ -13,42 +14,27 @@
+ import android.widget.Button;
+ import android.widget.Toast;
+ 
+-import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.app.NotificationCompat;
+ 
+-import com.android.volley.RequestQueue;
+-import com.android.volley.Response;
+-import com.android.volley.VolleyError;
+-import com.android.volley.toolbox.StringRequest;
+-import com.android.volley.toolbox.Volley;
+-import com.google.android.gms.tasks.OnCompleteListener;
+-import com.google.android.gms.tasks.OnFailureListener;
+-import com.google.android.gms.tasks.OnSuccessListener;
+-import com.google.android.gms.tasks.Task;
+ import com.google.android.material.textfield.TextInputEditText;
+ import com.google.android.material.textfield.TextInputLayout;
+-import com.google.firebase.auth.AuthResult;
+-import com.google.firebase.auth.FirebaseAuth;
+-import com.google.firebase.auth.FirebaseUser;
+-import com.pbpkelompok3.shopping.api.UserApi;
+-
+-import org.json.JSONException;
+-import org.json.JSONObject;
++import com.pbpkelompok3.shopping.api.ApiRequestProdukMan;
++import com.pbpkelompok3.shopping.api.Retroserver;
++import com.pbpkelompok3.shopping.api.UserResponse;
+ 
+-import java.util.HashMap;
+-import java.util.Map;
+-
+-import static com.android.volley.Request.Method.POST;
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
+ 
+ public class SignUpActivity extends AppCompatActivity {
+ 
+-    private String getEmail,getPassword,getFullname, getPhoneNumber;
+-    private TextInputEditText fullname, phoneNumber, email, password;
+-    private TextInputLayout fullnameLayout, phoneNumberLayout, emailLayout, passwordLayout;
++    private String getFirst, getLast, getEmail,getPassword, getPhoneNumber;
++    private TextInputEditText firstName,lastName, phoneNumber, email, password;
++    private TextInputLayout lastLayout, firstLayout, phoneNumberLayout, emailLayout, passwordLayout;
+     private Button btnSignup,btnSignIn;
+-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+-    private FirebaseAuth auth;
++//    private FirebaseAuth.AuthStateListener mAuthStateListener;
++//    private FirebaseAuth auth;
+     private String CHANNEL_ID = "Channel Sign Up";
+ 
+ 
+@@ -57,14 +43,17 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_sign_up);
++//        auth =FirebaseAuth.getInstance();
+ 
+-        auth =FirebaseAuth.getInstance();
+-        fullname = findViewById(R.id.input_Fullname);
++        firstName = findViewById(R.id.input_firstName);
++        lastName = findViewById(R.id.input_lastName);
+         phoneNumber = findViewById(R.id.input_phone);
+         email = findViewById(R.id.input_email);
+         password = findViewById(R.id.input_password);
+ 
+-        fullnameLayout = findViewById(R.id.fullname);
++
++        firstLayout = findViewById(R.id.first_name);
++        lastLayout = findViewById(R.id.last_name);
+         phoneNumberLayout = findViewById(R.id.phoneNumber);
+         emailLayout = findViewById(R.id.email);
+         passwordLayout = findViewById(R.id.password);
+@@ -76,37 +65,8 @@
+             @Override
+             public void onClick(View view) {
+                 if(cekDataUserSignUp()) {
+-                    auth.createUserWithEmailAndPassword(getEmail,getPassword)
+-                            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+-                                @Override
+-                                public void onComplete(@NonNull Task<AuthResult> task) {
+-                                    if(task.isSuccessful()) {
+-                                        //send verification link
+-                                        FirebaseUser user = auth.getCurrentUser();
+-                                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+-                                            @Override
+-                                            public void onSuccess(Void aVoid) {
+-                                                Toast.makeText(SignUpActivity.this, "Verification Link has been sent to your email address", Toast.LENGTH_SHORT).show();
+-                                            }
+-                                        }).addOnFailureListener(new OnFailureListener() {
+-                                            @Override
+-                                            public void onFailure(@NonNull Exception e) {
+-                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+-                                            }
+-                                        });
+-                                        FirebaseUser fUser = auth.getCurrentUser();
+-
+-                                        tambahUser(fullname.getText().toString(),email.getText().toString(),"",
+-                                                    phoneNumber.getText().toString(), password.getText().toString());
+-                                        createNotificationChannel();
+-                                        addNotification();
+-                                        Intent i = new Intent(SignUpActivity.this,LoginActivity.class);
+-                                        startActivity(i);
+-                                    }else {
+-                                        Toast.makeText(SignUpActivity.this, "Register Failed :  "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+-                                    }
+-                                }
+-                            });
++                    tambahUser(firstName.getText().toString(),lastName.getText().toString(),
++                            email.getText().toString(),password.getText().toString(),phoneNumber.getText().toString());
+                 }
+             }
+         });
+@@ -124,7 +84,8 @@
+         //Mendapatkan data yang diinputkan User
+         getEmail = email.getText().toString();
+         getPassword = password.getText().toString();
+-        getFullname = fullname.getText().toString();
++        getFirst = firstName.getText().toString();
++        getLast = lastName.getText().toString();
+         getPhoneNumber = phoneNumber.getText().toString();
+ 
+         boolean validation = true;
+@@ -139,8 +100,8 @@
+             password.setError("Password is Required");
+             validation = false;
+         }
+-        if(getFullname.length()==0){
+-            fullname.setError("Fullname is required");
++        if(firstName.length()==0){
++            firstName.setError("First name is required");
+             validation = false;
+         }
+ 
+@@ -153,46 +114,39 @@
+             phoneNumber.setError("Phone Number is Required");
+             validation = false;
+         } else if(getPhoneNumber.length()<10 || getPhoneNumber.length()>13){
+-            phoneNumber.setError("Phone Number is invalid");
++            phoneNumber.setError("Phone Number should be 10-13 characters");
+             validation = false;
+         }
+         return validation;
+     }
+ 
+-    public void tambahUser(final String nama, final String email, final String image, final String noTelp, final String password){
+-        //deklarasi queue
+-        RequestQueue queue = Volley.newRequestQueue(this);
++    public void tambahUser(final String firstName, final String lastName,  final String email,  final String password, final String noTelp){
++        final ProgressDialog progressDialog;
++        progressDialog = new ProgressDialog(this);
++        progressDialog.setMessage("loading...");
++        progressDialog.setTitle("Registering Account...");
++        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
++        progressDialog.show();
++        ApiRequestProdukMan apiService = Retroserver.getClient().create(ApiRequestProdukMan.class);
++        Call<UserResponse> add = apiService.register(firstName,lastName,email,password,noTelp);
+ 
+-        StringRequest stringRequest = new StringRequest(POST, UserApi.URL_REGISTER, new Response.Listener<String>() {
++        add.enqueue(new Callback<UserResponse>() {
+             @Override
+-            public void onResponse(String response) {
+-                try {
+-                    JSONObject obj = new JSONObject(response);
+-                    Toast.makeText(SignUpActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+-                } catch (JSONException e) {
+-                    e.printStackTrace();
+-                }
++            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
++                progressDialog.dismiss();
++                Toast.makeText(SignUpActivity.this, response.body().getMessage(),Toast.LENGTH_SHORT).show();
++                createNotificationChannel();
++                addNotification();
++                Intent i = new Intent(SignUpActivity.this,LoginActivity.class);
++                startActivity(i);
+             }
+-        }, new Response.ErrorListener() {
+-            @Override
+-            public void onErrorResponse(VolleyError error) {
+-                //Disini bagian jika response jaringan terdapat gangguan/error
+-                Toast.makeText(SignUpActivity.this, error.getMessage() , Toast.LENGTH_SHORT).show();
+-            }
+-        }){
++
+             @Override
+-            protected Map<String, String> getParams(){
+-                Map<String,String> params = new HashMap<String, String>();
+-                params.put("full_name",nama);
+-                params.put("email",email);
+-                params.put("no_telp",noTelp);
+-                params.put("foto_user",image);
+-                params.put("password",password);
+-                return params;
++            public void onFailure(Call<UserResponse> call, Throwable t) {
++                progressDialog.dismiss();
++                Toast.makeText(SignUpActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+             }
+-        };
+-        //Disini proses penambahan request yang sudah kita buat ke request queue yang sudah dideklarasi
+-        queue.add(stringRequest);
++        });
+     }
+ 
+     private void createNotificationChannel() {
+@@ -228,5 +182,37 @@
+         manager.notify(0,builder.build());
+     }
+ 
++    //firebase
++        //                    auth.createUserWithEmailAndPassword(getEmail,getPassword)
++//                            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
++//                                @Override
++//                                public void onComplete(@NonNull Task<AuthResult> task) {
++//                                    if(task.isSuccessful()) {
++//                                        //send verification link
++//                                        FirebaseUser user = auth.getCurrentUser();
++//                                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
++//                                            @Override
++//                                            public void onSuccess(Void aVoid) {
++//                                                Toast.makeText(SignUpActivity.this, "Verification Link has been sent to your email address", Toast.LENGTH_SHORT).show();
++//                                            }
++//                                        }).addOnFailureListener(new OnFailureListener() {
++//                                            @Override
++//                                            public void onFailure(@NonNull Exception e) {
++//                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
++//                                            }
++//                                        });
++//                                        FirebaseUser fUser = auth.getCurrentUser();
++//
++//                                        tambahUser(fullname.getText().toString(),email.getText().toString(),"",
++//                                                    phoneNumber.getText().toString(), password.getText().toString());
++//                                        createNotificationChannel();
++//                                        addNotification();
++//                                        Intent i = new Intent(SignUpActivity.this,LoginActivity.class);
++//                                        startActivity(i);
++//                                    }else {
++//                                        Toast.makeText(SignUpActivity.this, "Register Failed :  "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
++//                                    }
++//                                }
++//                            });
+     
+ }
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">Galaxy Store</string>\r\n    <string name=\"navigation_drawer_open\">Open navigation drawer</string>\r\n    <string name=\"navigation_drawer_close\">Close navigation drawer</string>\r\n    <string name=\"nav_header_title\">Android Studio</string>\r\n    <string name=\"nav_header_subtitle\">android.studio@android.com</string>\r\n    <string name=\"nav_header_desc\">Navigation header</string>\r\n    <string name=\"action_settings\">Settings</string>\r\n\r\n    <string name=\"menu_home\">Home</string>\r\n    <string name=\"menu_woman\">Woman</string>\r\n    <string name=\"menu_man\">Man</string>\r\n    <string name=\"menu_profile\">Profile</string>\r\n    <string name=\"menu_logout\">Logout</string>\r\n    <string name=\"menu_cart\">Cart</string>\r\n    <string name=\"menu_place\">Place</string>\r\n\r\n    <string name=\"edit_profile_picture\">Change Profile Picture</string>\r\n    <string name=\"my_profile\">Profile</string>\r\n    <string name=\"nama\">Name</string>\r\n    <string name=\"logout\">Logout</string>\r\n    <string name=\"edit_profile\">Change Profile</string>\r\n    <string name=\"phone_number\">Phone Number</string>\r\n    <string name=\"email\">Email</string>\r\n\r\n    <string name=\"input_your_name\">Input Your Fullname</string>\r\n    <string name=\"input_your_phone_number\">Input Your Phone Number</string>\r\n    <string name=\"input_your_email\">Input Your Email</string>\r\n    <string name=\"input_your_password\">Input Your Password</string>\r\n\r\n    <string name=\"cancel\">Cancel</string>\r\n    <string name=\"update_profile\">Update</string>\r\n    <string name=\"search\">Search by name</string>\r\n\r\n\r\n    <!-- TODO: Remove or change this placeholder text -->\r\n    <string name=\"haveAccount\">Doesn\\'t have an account ?</string>\r\n    <string name=\"hello_blank_fragment\">Hello blank fragment</string>\r\n    <string name=\"login\">Login</string>\r\n    <string name=\"sign_up\">Sign Up</string>\r\n    <string name=\"start_navigation\">start_navigation</string>\r\n    <string name=\"mapbox_access_token\">pk.eyJ1IjoibWVvbmciLCJhIjoiY2tmcXg2MmF4MDluYjJxb3gxdzM5NXBidCJ9.3_bCd0Au5-WxEu-FQH5PWA</string>\r\n\r\n    <string name=\"open\">Open</string>\r\n    <string name=\"close\">Close</string>\r\n    <string name=\"male\">Male</string>\r\n\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/res/values/strings.xml	(date 1607070231105)
+@@ -23,7 +23,8 @@
+     <string name="phone_number">Phone Number</string>
+     <string name="email">Email</string>
+ 
+-    <string name="input_your_name">Input Your Fullname</string>
++    <string name="input_your_first_name">Input Your First Name</string>
++    <string name="input_your_last_name">Input Your Last Name</string>
+     <string name="input_your_phone_number">Input Your Phone Number</string>
+     <string name="input_your_email">Input Your Email</string>
+     <string name="input_your_password">Input Your Password</string>
+Index: app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.pbpkelompok3.shopping.api;\r\n\r\npublic class UserApi {\r\n    public static final String ROOT_URL\t    = \"https://pbpkelompokcf.000webhostapp.com/\";\r\n    public static final String ROOT_API\t    =  ROOT_URL+\"api/\";\r\n\r\n    public static final String URL_LOGIN    =  ROOT_API+\"user?email=\";\r\n    public static final String URL_REGISTER =  ROOT_API+\"user\";\r\n//    public static final String URL_SELECT   =  ROOT_API+\"user/\";\r\n    public static final String URL_UPDATE   =  ROOT_API+\"user?email=\";\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java	(revision a1047904d5ad2fcc55c0c91baaa9b5880a0aabb0)
++++ app/src/main/java/com/pbpkelompok3/shopping/api/UserApi.java	(date 1607086770842)
+@@ -1,12 +1,12 @@
+ package com.pbpkelompok3.shopping.api;
+ 
+ public class UserApi {
+-    public static final String ROOT_URL	    = "https://pbpkelompokcf.000webhostapp.com/";
++    public static final String ROOT_URL	    = "http://pbpgalaxystore.xyz/";
+     public static final String ROOT_API	    =  ROOT_URL+"api/";
+ 
+-    public static final String URL_LOGIN    =  ROOT_API+"user?email=";
+-    public static final String URL_REGISTER =  ROOT_API+"user";
+-//    public static final String URL_SELECT   =  ROOT_API+"user/";
+-    public static final String URL_UPDATE   =  ROOT_API+"user?email=";
++    public static final String URL_LOGIN    =  ROOT_API+"user/";
++//    public static final String URL_REGISTER =  ROOT_API+"register";
++
++    public static final String URL_UPDATE   =  ROOT_API+"user";
+ 
+ }

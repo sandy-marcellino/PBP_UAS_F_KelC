@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "799074548769",
+    "firebase_url": "https://galaxystore-afae2.firebaseio.com",
+    "project_id": "galaxystore-afae2",
+    "storage_bucket": "galaxystore-afae2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799074548769:android:ec71dbbb76f45b37727760",
+        "android_client_info": {
+          "package_name": "com.pbpkelompok3.shopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOf5jWu-q7ufk1hoewyh8PefWBfhXawn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799074548769:android:ffa59c9082c2c696727760",
+        "android_client_info": {
+          "package_name": "com.tubesPbp.galaxystore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOf5jWu-q7ufk1hoewyh8PefWBfhXawn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799074548769:android:869475f995fb0837727760",
+        "android_client_info": {
+          "package_name": "com.pbp.jualonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOf5jWu-q7ufk1hoewyh8PefWBfhXawn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799074548769-4840bnip7tis6al9op0e5bqhft8ssggj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

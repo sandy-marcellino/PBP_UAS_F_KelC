@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "43752354220",
+    "firebase_url": "https://galaxy-store-8a593.firebaseio.com",
+    "project_id": "galaxy-store-8a593",
+    "storage_bucket": "galaxy-store-8a593.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43752354220:android:63428246a225bb17610a09",
+        "android_client_info": {
+          "package_name": "com.pbpkelompok3.shopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43752354220-dsbeh1m4d0tl6u0t5urarfh69jpvleei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pbpkelompok3.shopping",
+            "certificate_hash": "259e9c6235a6055359b07d085dc54dd2db4fd566"
+          }
+        },
+        {
+          "client_id": "43752354220-p38ddhbcopbfhs12u6soba0v1jo6e1s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ5ZIGZswVBweZDezV1toeMeyT2trBEa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43752354220-p38ddhbcopbfhs12u6soba0v1jo6e1s4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

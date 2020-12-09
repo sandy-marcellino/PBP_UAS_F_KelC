@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/map1"
+        android:title="Dark"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/map2"
+        android:title="Streets"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/map3"
+        android:title="Light"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/map4"
+        android:title="Outdoors"
+        app:showAsAction="never"
+        />
+</menu>
